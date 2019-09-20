@@ -33,9 +33,10 @@ var info = {
   'photos': ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
 };
 
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 var accomodationsAmount = info.avatars.length;
 var accomodations = getLocationsList(info);
-
 var map = document.querySelector('.map');
 var pins = document.querySelector('.map__pins');
 map.classList.remove('map--faded');
@@ -54,7 +55,7 @@ function getLocationsList(data) {
   var locations = [];
 
   for (var i = 0; i < accomodationsAmount; i++) {
-    var xCoord = getRandomNumber(0, 1200);
+    var xCoord = getRandomNumber(100, 1100);
     var yCoord = getRandomNumber(130, 630);
 
     var accomodation = {
@@ -91,19 +92,12 @@ function getLocationsList(data) {
 function createPin(elem) {
   var template = document.querySelector('#pin');
   var pin = template.cloneNode(true).content.querySelector('.map__pin');
-  var pinStyles = getComputedStyle(pin);
   var pinImage = pin.querySelector('img');
-
-  //console.log(pinStyles);
-  console.log(pinStyles.getPropertyValue('width'));
-
-  var pinWidth = parseInt(pinStyles.getPropertyValue('width'), 10);
-  var pinHeight = parseInt(pinStyles.getPropertyValue('height'), 10);
 
   pinImage.src = elem.author.avatar;
   pinImage.alt = elem.offer.title;
-  pin.style.left = elem.location.x + 'px';
-  pin.style.top = elem.location.y + 'px';
+  pin.style.left = elem.location.x - PIN_WIDTH / 2 + 'px';
+  pin.style.top = elem.location.y - PIN_HEIGHT + 'px';
 
   return pin;
 }
@@ -112,8 +106,7 @@ function renderPins(data) {
   var fragment = document.createDocumentFragment();
 
   for (var j = 0; j < accomodationsAmount; j++) {
-    var newPin = createPin(data[j]);
-    fragment.appendChild(newPin);
+    fragment.appendChild(createPin(data[j]));
   }
 
   pins.appendChild(fragment);
