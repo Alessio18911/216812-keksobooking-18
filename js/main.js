@@ -145,6 +145,22 @@ function activatePage() {
   activateFormFields(adFormFields);
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
+  isPageActive = true;
+
+  fillAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
+}
+
+function fillAddressField(pin, pinWidth, pinHeight, isPageActive) {
+  var pinXCoord = pin.offsetLeft + parseInt(pinWidth / 2, 10);
+  var pinYCoord = null;
+
+  if (!isPageActive) {
+    pinYCoord = pin.offsetTop + parseInt(pinWidth / 2, 10);
+  } else {
+    pinYCoord = pin.offsetTop + pinHeight;
+  }
+
+  adFormAddressField.value = pinXCoord + ', ' + pinYCoord;
 }
 
 var INFO = {
@@ -199,6 +215,8 @@ var INFO = {
 
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 87;
 
 var accomodationsAmount = INFO.avatars.length;
 var accomodations = getLocationsList(INFO);
@@ -209,14 +227,19 @@ var pins = map.querySelector('.map__pins');
 var mainPin = pins.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormFields = adForm.querySelectorAll('fieldset');
+var adFormAddressField = adForm.querySelector('input[name="address"]');
+var isPageActive = false;
 
 renderPins(accomodations);
 renderAdvertisment(accomodations[0]);
 disableFormFields(mapFiltersFormFields);
 disableFormFields(adFormFields);
+fillAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
 
-mainPin.addEventListener('mousedown', function () {
-  activatePage();
+mainPin.addEventListener('mousedown', function (evt) {
+  if (evt.which === 1) {
+    activatePage();
+  }
 });
 
 mainPin.addEventListener('keydown', function (evt) {
