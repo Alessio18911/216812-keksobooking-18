@@ -208,6 +208,7 @@ var pins = map.querySelector('.map__pins');
 var mainPin = pins.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormFields = adForm.querySelectorAll('fieldset');
+var adFormAddressField = adForm.querySelector('input[name="address"]');
 
 renderPins(accomodations);
 renderAdvertisment(accomodations[0]);
