@@ -1,5 +1,4 @@
 'use strict';
-//аварийное восстановление
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -163,6 +162,18 @@ function fillAddressField(pin, pinWidth, pinHeight, isPageActive) {
   adFormAddressField.value = pinXCoord + ', ' + pinYCoord;
 }
 
+function setCustomValidity() {
+  var numberOfRooms = roomNumberSelect.value;
+  var numberOfGuests = capacitySelect.value;
+
+  if (!rooms[numberOfRooms].capacity.includes(numberOfGuests)) {
+    errorText.textContent = rooms[numberOfRooms].errorText;
+    return false;
+  }
+
+  return true;
+}
+
 var INFO = {
   'avatars': ['img/avatars/user01.png',
     'img/avatars/user02.png',
@@ -227,8 +238,33 @@ var pins = map.querySelector('.map__pins');
 var mainPin = pins.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormFields = adForm.querySelectorAll('fieldset');
-var adFormAddressField = adForm.querySelector('input[name="address"]');
+var adFormAddressField = adForm.querySelector('#address');
+var adFormSubmitButton = adForm.querySelector('.ad-form__submit');
 var isPageActive = false;
+var roomNumberSelect = adForm.querySelector('#room_number');
+var errorText = roomNumberSelect.nextElementSibling;
+var capacitySelect = adForm.querySelector('#capacity');
+var rooms = {
+  '1': {
+    capacity: ['1'],
+    errorText: 'В 1 комнате может быть не более 1 гостя'
+  },
+
+  '2': {
+    capacity: ['1', '2'],
+    errorText: 'В 2 комнатах может быть не более 2 гостей'
+  },
+
+  '3': {
+    capacity: ['1', '2', '3'],
+    errorText: 'В 3 комнатах может быть не более 3 гостей'
+  },
+
+  '100': {
+    capacity: ['0'],
+    errorText: '100 комнат не для гостей'
+  },
+};
 
 renderPins(accomodations);
 renderAdvertisment(accomodations[0]);
@@ -245,5 +281,12 @@ mainPin.addEventListener('mousedown', function (evt) {
 mainPin.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 13) {
     activatePage();
+  }
+});
+
+adFormSubmitButton.addEventListener('click', function (evt) {
+  var isNumberOfGuestsValid = setCustomValidity();
+  if (!isNumberOfGuestsValid) {
+    evt.preventDefault();
   }
 });
