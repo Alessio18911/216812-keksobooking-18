@@ -343,3 +343,4 @@ timeOutSelect.addEventListener('change', function (evt) {
 
 roomsSelect.addEventListener('change', validateRoomsCapacity);
 guestsSelect.addEventListener('change', validateRoomsCapacity);
+//
