@@ -64,8 +64,8 @@
     ]
   };
 
-  var accomodations = getLocationsList(INFO);
   var accomodationsAmount = INFO.avatars.length;
+  var accomodations = getLocationsList(INFO);
 
   function getLocationsList(data) {
     var locations = [];
@@ -75,8 +75,6 @@
         author: {
           avatar: data.avatars[i]
         },
-
-        id: i + 1,
 
         offer: {
           title: window.util.getRandomArrayElement(data.titles),
@@ -97,8 +95,7 @@
         }
       };
 
-      accomodation.offer.address =
-        accomodation.location.x + ', ' + accomodation.location.y;
+      accomodation.offer.address = accomodation.location.x + ', ' + accomodation.location.y;
 
       locations.push(accomodation);
     }
@@ -107,8 +104,7 @@
   }
 
   window.data = {
-    accomodations: accomodations,
     accomodationsAmount: accomodationsAmount,
-    getLocationsList: getLocationsList
+    accomodations: accomodations
   };
 })();
