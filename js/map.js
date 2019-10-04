@@ -3,7 +3,6 @@
 (function () {
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
-
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
   var pinsContainer = map.querySelector('.map__pins');

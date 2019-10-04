@@ -81,19 +81,22 @@
     }
   }
 
+  function onTimeSelectsChange(evt) {
+    if (evt.target.id === 'timein') {
+      timeOutSelect.value = evt.target.value;
+      return;
+    }
+
+    timeInSelect.value = evt.target.value;
+  }
+
   validateRoomsCapacity();
 
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
   guestsSelect.addEventListener('change', validateRoomsCapacity);
   roomsSelect.addEventListener('change', validateRoomsCapacity);
-
-  timeInSelect.addEventListener('change', function (evt) {
-    timeOutSelect.value = evt.target.value;
-  });
-
-  timeOutSelect.addEventListener('change', function (evt) {
-    timeInSelect.value = evt.target.value;
-  });
+  timeInSelect.addEventListener('change', onTimeSelectsChange);
+  timeOutSelect.addEventListener('change', onTimeSelectsChange);
 
   window.form = {
     adForm: adForm,
