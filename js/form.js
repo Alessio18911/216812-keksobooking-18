@@ -62,9 +62,7 @@
     }
   }
 
-  validateRoomsCapacity();
-
-  locationTypeField.addEventListener('change', function (evt) {
+  function onLocationTypeFieldChange(evt) {
     switch (evt.target.value) {
       case 'bungalo':
         setLocationMinPrice(minPriceList.bungalow);
@@ -81,8 +79,11 @@
         setLocationMinPrice(minPriceList.palace);
         break;
     }
-  });
+  }
 
+  validateRoomsCapacity();
+
+  locationTypeField.addEventListener('change', onLocationTypeFieldChange);
   guestsSelect.addEventListener('change', validateRoomsCapacity);
   roomsSelect.addEventListener('change', validateRoomsCapacity);
 
