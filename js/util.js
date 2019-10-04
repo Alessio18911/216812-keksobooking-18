@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var isPageActive = false;
-
   function getRandomArrayElement(array) {
     var index = Math.floor(Math.random() * array.length);
 
@@ -14,7 +12,6 @@
   }
 
   window.util = {
-    isPageActive: isPageActive,
     getRandomArrayElement: getRandomArrayElement,
     getRandomNumber: getRandomNumber
   };

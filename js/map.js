@@ -1,13 +1,12 @@
 'use strict';
 
 (function () {
-  function activatePage() {
-    var isPageActive = !window.util.isPageActive;
-    toggleDialogFieldsAvailability(dialogFields, isPageActive);
-    map.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
-    window.form.fillAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
-  }
+  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = 70;
+
+  var map = document.querySelector('.map');
+  var mapFiltersContainer = map.querySelector('.map__filters-container');
+  var pinsContainer = map.querySelector('.map__pins');
 
   function createAdvertisment(data) {
     var template = document.querySelector('#card').content;
@@ -117,45 +116,9 @@
     pinsContainer.appendChild(fragment);
   }
 
-  function toggleDialogFieldsAvailability(fields, isPageActive) {
-    if (!isPageActive) {
-      fields.forEach(function (item) {
-        item.setAttribute('disabled', true);
-      });
-
-      return;
-    }
-
-    fields.forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-  }
-
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 80;
-  var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
-
-  var map = document.querySelector('.map');
-  var mainPin = document.querySelector('.map__pin--main');
-  var mapFiltersContainer = map.querySelector('.map__filters-container');
-  var pinsContainer = map.querySelector('.map__pins');
-  var dialogFields = document.querySelectorAll('input, select, textarea');
-
   renderPins(window.data.accomodations);
-  toggleDialogFieldsAvailability(dialogFields, window.util.isPageActive);
 
-  window.form.fillAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, window.util.isPageActive);
-
-  mainPin.addEventListener('mousedown', function (evt) {
-    if (evt.which === 1) {
-      activatePage();
-    }
-  });
-
-  mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 13) {
-      activatePage();
-    }
-  });
+  window.map = {
+    map: map
+  };
 })();

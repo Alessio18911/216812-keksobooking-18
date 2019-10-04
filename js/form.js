@@ -2,7 +2,7 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
-  var addressField = adForm.querySelector('#address');
+  var addressField = document.querySelector('#address');
   var locationTypeField = adForm.querySelector('#type');
   var locationPriceField = adForm.querySelector('#price');
   var timeInSelect = adForm.querySelector('#timein');
@@ -39,9 +39,9 @@
     palace: 10000
   };
 
-  function fillAddressField(pin, pinWidth, pinHeight, isPageActive) {
+  function fillAddressField(pin, pinWidth, pinHeight, flag) {
     var pinXCoord = pin.offsetLeft + parseInt(pinWidth / 2, 10);
-    var pinYCoord = !isPageActive ? pin.offsetTop + parseInt(pinWidth / 2, 10) : pin.offsetTop + pinHeight;
+    var pinYCoord = !flag ? pin.offsetTop + parseInt(pinWidth / 2, 10) : pin.offsetTop + pinHeight;
 
     addressField.value = pinXCoord + ', ' + pinYCoord;
   }
@@ -93,7 +93,6 @@
   timeOutSelect.addEventListener('change', function (evt) {
     timeInSelect.value = evt.target.value;
   });
-
 
   window.form = {
     adForm: adForm,
