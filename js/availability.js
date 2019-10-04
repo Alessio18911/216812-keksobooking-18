@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var dialogFields = document.querySelectorAll('input, select, textarea');
+  var dialogFields = document.querySelectorAll('fieldset, select, textarea');
   var isPageActive = false;
 
   function activatePage(flag, fields, map, form) {
