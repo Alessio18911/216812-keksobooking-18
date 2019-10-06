@@ -39,7 +39,7 @@
     palace: 10000
   };
 
-  function fillAddressField(pin, pinWidth, pinHeight, flag) {
+  function fillInAddressField(pin, pinWidth, pinHeight, flag) {
     var pinXCoord = pin.offsetLeft + parseInt(pinWidth / 2, 10);
     var pinYCoord = !flag ? pin.offsetTop + parseInt(pinWidth / 2, 10) : pin.offsetTop + pinHeight;
 
@@ -100,6 +100,6 @@
 
   window.form = {
     adForm: adForm,
-    fillAddressField: fillAddressField
+    fillInAddressField: fillInAddressField
   };
 })();
