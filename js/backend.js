@@ -1,6 +1,12 @@
 'use strict';
 
 (function () {
+  var errorCodeMap = {
+    '400': 'Неверный запрос',
+    '401': 'Пользователь не авторизован',
+    '404': 'Ничего не найдено'
+  };
+
   function showError(errorMessage) {
     var mainPageContent = document.body.querySelector('main');
     var errorTemplate = document.querySelector('#error').content;
@@ -13,39 +19,20 @@
   }
 
   function load(onLoad, onError) {
-    var url = 'https://js.dump.academy/keksobooking/data';
+    var url = 'https://js.dump.academy/kksobooking/data';
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.send();
     xhr.timeout = 10000;
 
     xhr.addEventListener('load', function () {
-      var error;
-
-      switch (xhr.status) {
-        case 200:
-          onLoad(JSON.parse(xhr.responseText));
-          break;
-
-        case 400:
-          error = 'Неверный запрос';
-          break;
-
-        case 401:
-          error = 'Пользователь не авторизован';
-          break;
-
-        case 404:
-          error = 'Ничего не найдено';
-          break;
-
-        default:
-          error = 'Ошибка ' + xhr.status;
+      if (xhr.status === 200) {
+        onLoad(JSON.parse(xhr.responseText));
+        return;
       }
 
-      if (error) {
-        onError(error);
-      }
+      var error = errorCodeMap[xhr.status] ? errorCodeMap[xhr.status] : xhr.status;
+      onError('Ошибка ' + error);
     });
 
     xhr.addEventListener('error', function () {
