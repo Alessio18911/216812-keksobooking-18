@@ -77,11 +77,10 @@
 
   function renderPins(data) {
     var fragment = document.createDocumentFragment();
-    var accomodationsAmount = data.length;
 
-    for (var j = 0; j < accomodationsAmount; j++) {
-      fragment.appendChild(createPin(data[j]));
-    }
+    data.forEach(function (pin) {
+      fragment.appendChild(createPin(pin));
+    });
 
     pinsContainer.appendChild(fragment);
   }
