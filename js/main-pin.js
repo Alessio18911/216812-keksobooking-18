@@ -1,24 +1,20 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 82;
-  var MAIN_PIN_HALF_WIDTH = MAIN_PIN_WIDTH / 2;
+  var MAIN_PIN_HALF_WIDTH = window.util.MAIN_PIN_WIDTH / 2;
   var MAP_MAX_WIDTH = 1201;
   var MAP_MAX_HEIGHT = 631;
   var MAIN_PIN_X_MIN = -MAIN_PIN_HALF_WIDTH;
   var MAIN_PIN_X_MAX = MAP_MAX_WIDTH - MAIN_PIN_HALF_WIDTH;
   var MAIN_PIN_Y_MIN = 47;
-  var MAIN_PIN_Y_MAX = MAP_MAX_HEIGHT - MAIN_PIN_HEIGHT;
-  var mainPin = document.querySelector('.map__pin--main');
-  var mainPinImg = mainPin.querySelector('img');
+  var MAIN_PIN_Y_MAX = MAP_MAX_HEIGHT - window.util.MAIN_PIN_HEIGHT;
+  var mainPinImg = document.querySelector('.map__pin--main img');
 
-  window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, window.util.isPageActive);
+  window.util.getCoordsOfMainPin(window.util.isPageActive);
 
-  mainPin.addEventListener('keydown', function (evt) {
+  window.util.mainPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 13) {
       var isPageActive = !window.util.isPageActive;
-      window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
       window.util.togglePageAvailability(isPageActive);
       window.backend.load(null, window.map.renderPins);
     }
@@ -27,7 +23,6 @@
   mainPinImg.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var isPageActive = !window.util.isPageActive;
-    window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
     window.util.togglePageAvailability(isPageActive);
     window.backend.load(null, window.map.renderPins);
 
@@ -49,23 +44,23 @@
         y: moveEvt.clientY
       };
 
-      var mainPinHorizontalPosition = mainPin.offsetLeft - shift.x;
-      var mainPinVerticalPosition = mainPin.offsetTop - shift.y;
+      var mainPinHorizontalPosition = window.util.mainPin.offsetLeft - shift.x;
+      var mainPinVerticalPosition = window.util.mainPin.offsetTop - shift.y;
 
       if (mainPinHorizontalPosition < MAIN_PIN_X_MAX && mainPinHorizontalPosition > MAIN_PIN_X_MIN) {
-        mainPin.style.left = mainPinHorizontalPosition + 'px';
+        window.util.mainPin.style.left = mainPinHorizontalPosition + 'px';
       }
 
       if (mainPinVerticalPosition < MAIN_PIN_Y_MAX && mainPinVerticalPosition > MAIN_PIN_Y_MIN) {
-        mainPin.style.top = mainPinVerticalPosition + 'px';
+        window.util.mainPin.style.top = mainPinVerticalPosition + 'px';
       }
 
-      window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
+      window.util.getCoordsOfMainPin(isPageActive);
     }
 
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
-      window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
+      window.util.getCoordsOfMainPin(isPageActive);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);

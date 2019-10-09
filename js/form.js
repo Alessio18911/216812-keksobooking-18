@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var addressField = document.querySelector('#address');
   var locationTypeField = document.querySelector('#type');
   var locationPriceField = document.querySelector('#price');
   var timeInSelect = document.querySelector('#timein');
@@ -37,13 +36,6 @@
     house: 5000,
     palace: 10000
   };
-
-  function fillInAddressField(pin, pinWidth, pinHeight, flag) {
-    var pinXCoord = pin.offsetLeft + parseInt(pinWidth / 2, 10);
-    var pinYCoord = !flag ? pin.offsetTop + parseInt(pinWidth / 2, 10) : pin.offsetTop + pinHeight;
-
-    addressField.value = pinXCoord + ', ' + pinYCoord;
-  }
 
   function validateRoomsCapacity() {
     var numberOfRooms = roomsSelect.value;
@@ -85,8 +77,4 @@
   timeInSelect.addEventListener('change', onTimeSelectsChange);
   timeOutSelect.addEventListener('change', onTimeSelectsChange);
   window.util.adForm.addEventListener('submit', onFormSubmit);
-
-  window.form = {
-    fillInAddressField: fillInAddressField
-  };
 })();
