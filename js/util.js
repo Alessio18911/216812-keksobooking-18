@@ -3,7 +3,7 @@
 (function () {
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
-  var dialogFields = document.querySelectorAll('fieldset, select, textarea');
+  var dialogFields = document.querySelectorAll('fieldset, input, select, textarea');
   var isPageActive = false;
 
   function clearMap() {
@@ -17,6 +17,7 @@
     if (!flag) {
       map.classList.add('map--faded');
       adForm.classList.add('ad-form--disabled');
+      adForm.reset();
       dialogFields.forEach(function (item) {
         item.setAttribute('disabled', true);
       });
