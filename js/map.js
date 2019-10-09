@@ -23,17 +23,17 @@
     advt.querySelector('.popup__text--capacity').textContent =
       data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
     advt.querySelector('.popup__text--time').textContent =
-      'Заезд после ' + data.offer.checkIn + ', выезд до ' + data.offer.checkOut;
+      'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
     advt.querySelector('.popup__description').textContent =
       data.offer.description;
 
     var accomodationFeatures = advt.querySelector('.popup__features');
     accomodationFeatures.textContent = '';
-    createList('li', accomodationFeatures, data.offer.features);
+    window.util.createList('li', accomodationFeatures, data.offer.features);
 
     var accomodationPhotos = advt.querySelector('.popup__photos');
     accomodationPhotos.textContent = '';
-    createList('img', accomodationPhotos, data.offer.photos);
+    window.util.createList('img', accomodationPhotos, data.offer.photos);
 
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === 27) {
@@ -46,36 +46,6 @@
     });
 
     return advt;
-  }
-
-  function createList(item, list, content) {
-    var element;
-    var elementClasses;
-    var fragment = document.createDocumentFragment();
-    var arrayLength = content.length;
-
-    for (var i = 0; i < arrayLength; i++) {
-      if (item === 'li') {
-        element = document.createElement('li');
-        elementClasses = 'popup__feature popup__feature--' + content[i];
-        element.className = elementClasses;
-        element.textContent = content[i];
-      }
-
-      if (item === 'img') {
-        element = document.createElement('img');
-        element.src = content[i];
-        element.classList.add('popup__photo');
-        element.width = 45;
-        element.height = 45;
-        element.alt = 'Фотография жилья';
-      }
-
-      fragment.appendChild(element);
-    }
-
-    list.appendChild(fragment);
-    return list;
   }
 
   function createPin(elem) {
@@ -108,16 +78,15 @@
   function renderPins(data) {
     var fragment = document.createDocumentFragment();
 
-    for (var j = 0; j < window.data.accomodationsAmount; j++) {
-      fragment.appendChild(createPin(data[j]));
-    }
+    data.forEach(function (pin) {
+      fragment.appendChild(createPin(pin));
+    });
 
     pinsContainer.appendChild(fragment);
   }
 
-  renderPins(window.data.accomodations);
-
   window.map = {
-    map: map
+    map: map,
+    renderPins: renderPins
   };
 })();
