@@ -10,12 +10,9 @@
   var MAIN_PIN_Y_MAX = MAP_MAX_HEIGHT - window.util.MAIN_PIN_HEIGHT;
   var mainPinImg = document.querySelector('.map__pin--main img');
 
-  window.util.getCoordsOfMainPin(window.util.isPageActive);
-
   window.util.mainPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 13) {
-      var isPageActive = !window.util.isPageActive;
-      window.util.togglePageAvailability(isPageActive);
+      window.util.activatePage();
       window.backend.load(null, window.map.renderPins);
     }
   });
@@ -23,7 +20,7 @@
   mainPinImg.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var isPageActive = !window.util.isPageActive;
-    window.util.togglePageAvailability(isPageActive);
+    window.util.activatePage();
     window.backend.load(null, window.map.renderPins);
 
     var startCoords = {

@@ -65,8 +65,7 @@
 
   function onFormSubmit(evt) {
     evt.preventDefault();
-    var isActive = window.util.isPageActive;
-    window.util.togglePageAvailability(isActive);
+    window.backend.save(new FormData(window.util.adForm), window.util.disablePage);
   }
 
   validateRoomsCapacity();

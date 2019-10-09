@@ -49,7 +49,7 @@
   }
 
   function save(data, onLoad) {
-    var url = 'https://js.dump.academy/keksobooking';
+    var url = 'https://js.dump.academy/keksoooking';
     httpRequest(url, 'POST', data, onLoad);
   }
 

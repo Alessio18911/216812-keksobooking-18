@@ -15,14 +15,9 @@
 
   function getCoordsOfMainPin(flag) {
     var pinXCoord = mainPin.offsetLeft + parseInt(MAIN_PIN_WIDTH / 2, 10);
-    var pinYCoord = !flag ? mainPin.offsetTop + parseInt(MAIN_PIN_WIDTH / 2, 10) : mainPin.offsetTop + MAIN_PIN_HEIGHT;
+    var pinYCoord = flag ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + parseInt(MAIN_PIN_WIDTH / 2, 10);
 
     addressField.value = pinXCoord + ', ' + pinYCoord;
-
-    return {
-      x: pinXCoord,
-      y: pinYCoord
-    };
   }
 
   function clearMap() {
@@ -32,27 +27,38 @@
     });
   }
 
-  function togglePageAvailability(flag) {
+  function toggleDialogFieldsAvailability(flag) {
     if (!flag) {
-      map.classList.add('map--faded');
-      adForm.classList.add('ad-form--disabled');
-      adForm.reset();
       dialogFields.forEach(function (item) {
         item.setAttribute('disabled', true);
       });
-      clearMap();
-      mainPin.style.top = mainPinInitialTop;
-      mainPin.style.left = mainPinInitialLeft;
-      getCoordsOfMainPin(flag);
+
       return;
     }
 
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
     dialogFields.forEach(function (item) {
       item.removeAttribute('disabled');
     });
-    getCoordsOfMainPin(!flag);
+  }
+
+  function disablePage() {
+    var isActive = isPageActive;
+    mainPin.style.top = mainPinInitialTop;
+    mainPin.style.left = mainPinInitialLeft;
+    map.classList.add('map--faded');
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+    toggleDialogFieldsAvailability(isActive);
+    clearMap();
+    getCoordsOfMainPin(isActive);
+  }
+
+  function activatePage() {
+    var isActive = !isPageActive;
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    toggleDialogFieldsAvailability(isActive);
+    getCoordsOfMainPin(isActive);
   }
 
   function createList(item, list, content) {
@@ -85,7 +91,7 @@
     return list;
   }
 
-  togglePageAvailability(isPageActive);
+  disablePage();
 
   window.util = {
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
@@ -94,9 +100,9 @@
     adForm: adForm,
     mainPin: mainPin,
     isPageActive: isPageActive,
-    dialogFields: dialogFields,
     createList: createList,
-    togglePageAvailability: togglePageAvailability,
+    activatePage: activatePage,
+    disablePage: disablePage,
     getCoordsOfMainPin: getCoordsOfMainPin
   };
 })();
