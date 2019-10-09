@@ -13,10 +13,25 @@
     var errorTemplate = document.querySelector('#error').content;
     var errorWindow = errorTemplate.cloneNode(true).querySelector('.error');
     var errorText = errorWindow.querySelector('.error__message');
+    var errorButton = errorWindow.querySelector('.error__button');
     errorText.textContent = errorMessage;
 
     mainPageContent.appendChild(errorWindow);
     document.body.style.overflow = 'hidden';
+
+    function onWindowErrorClick() {
+      removeErrorPopup();
+    }
+
+    function onWindowErrorKeydown(evt) {
+      if (evt.keyCode === 27) {
+        removeErrorPopup();
+      }
+    }
+
+    errorButton.addEventListener('click', onWindowErrorClick);
+    document.addEventListener('click', onWindowErrorClick);
+    document.addEventListener('keydown', onWindowErrorKeydown);
   }
 
   function showSuccess() {
@@ -25,6 +40,29 @@
 
     mainPageContent.appendChild(successWindow);
     document.body.style.overflow = 'hidden';
+
+    function onWindowSuccessClick() {
+      removeSuccessPopup();
+    }
+
+    function onWindowSuccessKeydown(evt) {
+      if (evt.keyCode === 27) {
+        removeSuccessPopup();
+      }
+    }
+
+    document.addEventListener('click', onWindowSuccessClick);
+    document.addEventListener('keydown', onWindowSuccessKeydown);
+  }
+
+  function removeSuccessPopup() {
+    document.querySelector('.success').remove();
+    document.body.style.overflow = 'auto';
+  }
+
+  function removeErrorPopup() {
+    document.querySelector('.error').remove();
+    document.body.style.overflow = 'auto';
   }
 
   function httpRequest(url, method, data, callback) {
