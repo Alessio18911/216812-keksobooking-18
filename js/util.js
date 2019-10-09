@@ -6,19 +6,28 @@
   var dialogFields = document.querySelectorAll('fieldset, select, textarea');
   var isPageActive = false;
 
-  function activatePage() {
+  function clearMap() {
+    var itemsToClear = document.querySelectorAll('.map__pin:not(.map__pin--main), .map__card');
+    itemsToClear.forEach(function (item) {
+      item.remove();
+    });
+  }
+
+  function togglePageAvailability(flag) {
+    if (!flag) {
+      map.classList.add('map--faded');
+      adForm.classList.add('ad-form--disabled');
+      dialogFields.forEach(function (item) {
+        item.setAttribute('disabled', true);
+      });
+      clearMap();
+      return;
+    }
+
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     dialogFields.forEach(function (item) {
       item.removeAttribute('disabled');
-    });
-  }
-
-  function disablePage() {
-    map.classList.add('map--faded');
-    adForm.classList.add('ad-form--disabled');
-    dialogFields.forEach(function (item) {
-      item.setAttribute('disabled', true);
     });
   }
 
@@ -52,13 +61,14 @@
     return list;
   }
 
+  togglePageAvailability(isPageActive);
+
   window.util = {
     map: map,
     adForm: adForm,
     dialogFields: dialogFields,
     isPageActive: isPageActive,
     createList: createList,
-    activatePage: activatePage,
-    disablePage: disablePage
+    togglePageAvailability: togglePageAvailability
   };
 })();

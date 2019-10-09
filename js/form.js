@@ -71,6 +71,12 @@
     timeInSelect.value = evt.target.value;
   }
 
+  function onFormSubmit(evt) {
+    evt.preventDefault();
+    var isActive = window.util.isPageActive;
+    window.util.togglePageAvailability(isActive);
+  }
+
   validateRoomsCapacity();
 
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
@@ -78,6 +84,7 @@
   roomsSelect.addEventListener('change', validateRoomsCapacity);
   timeInSelect.addEventListener('change', onTimeSelectsChange);
   timeOutSelect.addEventListener('change', onTimeSelectsChange);
+  window.util.adForm.addEventListener('submit', onFormSubmit);
 
   window.form = {
     fillInAddressField: fillInAddressField

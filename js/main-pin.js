@@ -19,7 +19,7 @@
     if (evt.keyCode === 13) {
       var isPageActive = !window.util.isPageActive;
       window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
-      window.util.activatePage(isPageActive, window.util.dialogFields, window.util.map, window.util.adForm);
+      window.util.togglePageAvailability(isPageActive);
       window.backend.load(null, window.map.renderPins);
     }
   });
@@ -28,7 +28,7 @@
     evt.preventDefault();
     var isPageActive = !window.util.isPageActive;
     window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
-    window.util.activatePage(isPageActive, window.util.dialogFields, window.util.map, window.util.adForm);
+    window.util.togglePageAvailability(isPageActive);
     window.backend.load(null, window.map.renderPins);
 
     var startCoords = {
