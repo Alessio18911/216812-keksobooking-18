@@ -32,7 +32,7 @@
   };
 
   var minPriceList = {
-    bungalow: 0,
+    bungalo: 0,
     flat: 1000,
     house: 5000,
     palace: 10000
@@ -43,11 +43,6 @@
     var pinYCoord = !flag ? pin.offsetTop + parseInt(pinWidth / 2, 10) : pin.offsetTop + pinHeight;
 
     addressField.value = pinXCoord + ', ' + pinYCoord;
-  }
-
-  function setLocationMinPrice(minPrice) {
-    locationPriceField.setAttribute('min', minPrice);
-    locationPriceField.placeholder = minPrice;
   }
 
   function validateRoomsCapacity() {
@@ -62,22 +57,9 @@
   }
 
   function onLocationTypeFieldChange(evt) {
-    switch (evt.target.value) {
-      case 'bungalo':
-        setLocationMinPrice(minPriceList.bungalow);
-        break;
-      case 'flat':
-        setLocationMinPrice(minPriceList.flat);
-        break;
-
-      case 'house':
-        setLocationMinPrice(minPriceList.house);
-        break;
-
-      case 'palace':
-        setLocationMinPrice(minPriceList.palace);
-        break;
-    }
+    var locationType = evt.target.value;
+    locationPriceField.setAttribute('min', minPriceList[locationType]);
+    locationPriceField.placeholder = minPriceList[locationType];
   }
 
   function onTimeSelectsChange(evt) {
