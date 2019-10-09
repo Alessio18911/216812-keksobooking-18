@@ -1,14 +1,13 @@
 'use strict';
 
 (function () {
-  var adForm = document.querySelector('.ad-form');
   var addressField = document.querySelector('#address');
-  var locationTypeField = adForm.querySelector('#type');
-  var locationPriceField = adForm.querySelector('#price');
-  var timeInSelect = adForm.querySelector('#timein');
-  var timeOutSelect = adForm.querySelector('#timeout');
-  var roomsSelect = adForm.querySelector('#room_number');
-  var guestsSelect = adForm.querySelector('#capacity');
+  var locationTypeField = document.querySelector('#type');
+  var locationPriceField = document.querySelector('#price');
+  var timeInSelect = document.querySelector('#timein');
+  var timeOutSelect = document.querySelector('#timeout');
+  var roomsSelect = document.querySelector('#room_number');
+  var guestsSelect = document.querySelector('#capacity');
 
   var rooms = {
     '1': {
@@ -99,7 +98,6 @@
   timeOutSelect.addEventListener('change', onTimeSelectsChange);
 
   window.form = {
-    adForm: adForm,
     fillInAddressField: fillInAddressField
   };
 })();

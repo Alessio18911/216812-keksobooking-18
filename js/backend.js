@@ -18,16 +18,15 @@
     document.body.style.overflow = 'hidden';
   }
 
-  function load(onLoad) {
-    var url = 'https://js.dump.academy/keksobooking/data';
+  function httpRequest(url, method, data, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.send();
+    xhr.open(method, url);
+    xhr.send(data);
     xhr.timeout = 10000;
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onLoad(JSON.parse(xhr.responseText));
+        callback(JSON.parse(xhr.responseText));
         return;
       }
 
@@ -44,7 +43,18 @@
     });
   }
 
+  function load(data, onLoad) {
+    var url = 'https://js.dump.academy/keksobooking/data';
+    httpRequest(url, 'GET', data, onLoad);
+  }
+
+  function save(data, onLoad) {
+    var url = 'https://js.dump.academy/keksobooking';
+    httpRequest(url, 'POST', data, onLoad);
+  }
+
   window.backend = {
-    load: load
+    load: load,
+    save: save
   };
 })();

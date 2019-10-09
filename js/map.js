@@ -3,9 +3,8 @@
 (function () {
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
-  var map = document.querySelector('.map');
-  var mapFiltersContainer = map.querySelector('.map__filters-container');
-  var pinsContainer = map.querySelector('.map__pins');
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
+  var pinsContainer = document.querySelector('.map__pins');
 
   function createAdvertisment(data) {
     var template = document.querySelector('#card').content;
@@ -59,7 +58,7 @@
     pin.style.top = elem.location.y - PIN_HEIGHT + 'px';
 
     pin.addEventListener('click', function () {
-      var previousAdvt = map.querySelector('.map__card');
+      var previousAdvt = document.querySelector('.map__card');
       if (previousAdvt) {
         previousAdvt.remove();
       }
@@ -72,7 +71,7 @@
 
   function renderAdvertisment(data) {
     var advertisment = createAdvertisment(data);
-    map.insertBefore(advertisment, mapFiltersContainer);
+    window.util.map.insertBefore(advertisment, mapFiltersContainer);
   }
 
   function renderPins(data) {
@@ -86,7 +85,6 @@
   }
 
   window.map = {
-    map: map,
     renderPins: renderPins
   };
 })();

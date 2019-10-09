@@ -1,6 +1,27 @@
 'use strict';
 
 (function () {
+  var map = document.querySelector('.map');
+  var adForm = document.querySelector('.ad-form');
+  var dialogFields = document.querySelectorAll('fieldset, select, textarea');
+  var isPageActive = false;
+
+  function activatePage() {
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    dialogFields.forEach(function (item) {
+      item.removeAttribute('disabled');
+    });
+  }
+
+  function disablePage() {
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+    dialogFields.forEach(function (item) {
+      item.setAttribute('disabled', true);
+    });
+  }
+
   function createList(item, list, content) {
     var element;
     var elementClasses;
@@ -32,6 +53,12 @@
   }
 
   window.util = {
-    createList: createList
+    map: map,
+    adForm: adForm,
+    dialogFields: dialogFields,
+    isPageActive: isPageActive,
+    createList: createList,
+    activatePage: activatePage,
+    disablePage: disablePage
   };
 })();

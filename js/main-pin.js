@@ -13,23 +13,23 @@
   var mainPin = document.querySelector('.map__pin--main');
   var mainPinImg = mainPin.querySelector('img');
 
-  window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, window.availability.isPageActive);
+  window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, window.util.isPageActive);
 
   mainPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 13) {
-      var isPageActive = !window.availability.isPageActive;
+      var isPageActive = !window.util.isPageActive;
       window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
-      window.availability.activatePage(isPageActive, window.availability.dialogFields, window.map.map, window.form.adForm);
-      window.backend.load(window.map.renderPins);
+      window.util.activatePage(isPageActive, window.util.dialogFields, window.util.map, window.util.adForm);
+      window.backend.load(null, window.map.renderPins);
     }
   });
 
   mainPinImg.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    var isPageActive = !window.availability.isPageActive;
+    var isPageActive = !window.util.isPageActive;
     window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
-    window.availability.activatePage(isPageActive, window.availability.dialogFields, window.map.map, window.form.adForm);
-    window.backend.load(window.map.renderPins);
+    window.util.activatePage(isPageActive, window.util.dialogFields, window.util.map, window.util.adForm);
+    window.backend.load(null, window.map.renderPins);
 
     var startCoords = {
       x: evt.clientX,
