@@ -18,8 +18,8 @@
     document.body.style.overflow = 'hidden';
   }
 
-  function load(onLoad, onError) {
-    var url = 'https://js.dump.academy/kksobooking/data';
+  function load(onLoad) {
+    var url = 'https://js.dump.academy/keksobooking/data';
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.send();
@@ -32,20 +32,19 @@
       }
 
       var error = errorCodeMap[xhr.status] ? errorCodeMap[xhr.status] : xhr.status;
-      onError('Ошибка ' + error);
+      showError('Ошибка ' + error);
     });
 
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      showError('Произошла ошибка соединения');
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
+      showError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
     });
   }
 
   window.backend = {
-    showError: showError,
     load: load
   };
 })();

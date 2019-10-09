@@ -20,7 +20,7 @@
       var isPageActive = !window.availability.isPageActive;
       window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
       window.availability.activatePage(isPageActive, window.availability.dialogFields, window.map.map, window.form.adForm);
-      window.backend.load(window.map.renderPins, window.backend.showError);
+      window.backend.load(window.map.renderPins);
     }
   });
 
@@ -29,7 +29,7 @@
     var isPageActive = !window.availability.isPageActive;
     window.form.fillInAddressField(mainPin, MAIN_PIN_WIDTH, MAIN_PIN_HEIGHT, isPageActive);
     window.availability.activatePage(isPageActive, window.availability.dialogFields, window.map.map, window.form.adForm);
-    window.backend.load(window.map.renderPins, window.backend.showError);
+    window.backend.load(window.map.renderPins);
 
     var startCoords = {
       x: evt.clientX,
