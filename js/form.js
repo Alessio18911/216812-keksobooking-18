@@ -1,14 +1,12 @@
 'use strict';
 
 (function () {
-  var adForm = document.querySelector('.ad-form');
-  var addressField = document.querySelector('#address');
-  var locationTypeField = adForm.querySelector('#type');
-  var locationPriceField = adForm.querySelector('#price');
-  var timeInSelect = adForm.querySelector('#timein');
-  var timeOutSelect = adForm.querySelector('#timeout');
-  var roomsSelect = adForm.querySelector('#room_number');
-  var guestsSelect = adForm.querySelector('#capacity');
+  var locationTypeField = document.querySelector('#type');
+  var locationPriceField = document.querySelector('#price');
+  var timeInSelect = document.querySelector('#timein');
+  var timeOutSelect = document.querySelector('#timeout');
+  var roomsSelect = document.querySelector('#room_number');
+  var guestsSelect = document.querySelector('#capacity');
 
   var rooms = {
     '1': {
@@ -33,23 +31,11 @@
   };
 
   var minPriceList = {
-    bungalow: 0,
+    bungalo: 0,
     flat: 1000,
     house: 5000,
     palace: 10000
   };
-
-  function fillInAddressField(pin, pinWidth, pinHeight, flag) {
-    var pinXCoord = pin.offsetLeft + parseInt(pinWidth / 2, 10);
-    var pinYCoord = !flag ? pin.offsetTop + parseInt(pinWidth / 2, 10) : pin.offsetTop + pinHeight;
-
-    addressField.value = pinXCoord + ', ' + pinYCoord;
-  }
-
-  function setLocationMinPrice(minPrice) {
-    locationPriceField.setAttribute('min', minPrice);
-    locationPriceField.placeholder = minPrice;
-  }
 
   function validateRoomsCapacity() {
     var numberOfRooms = roomsSelect.value;
@@ -63,22 +49,9 @@
   }
 
   function onLocationTypeFieldChange(evt) {
-    switch (evt.target.value) {
-      case 'bungalo':
-        setLocationMinPrice(minPriceList.bungalow);
-        break;
-      case 'flat':
-        setLocationMinPrice(minPriceList.flat);
-        break;
-
-      case 'house':
-        setLocationMinPrice(minPriceList.house);
-        break;
-
-      case 'palace':
-        setLocationMinPrice(minPriceList.palace);
-        break;
-    }
+    var locationType = evt.target.value;
+    locationPriceField.setAttribute('min', minPriceList[locationType]);
+    locationPriceField.placeholder = minPriceList[locationType];
   }
 
   function onTimeSelectsChange(evt) {
@@ -90,6 +63,11 @@
     timeInSelect.value = evt.target.value;
   }
 
+  function onFormSubmit(evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(window.util.adForm), window.util.disablePage);
+  }
+
   validateRoomsCapacity();
 
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
@@ -97,9 +75,5 @@
   roomsSelect.addEventListener('change', validateRoomsCapacity);
   timeInSelect.addEventListener('change', onTimeSelectsChange);
   timeOutSelect.addEventListener('change', onTimeSelectsChange);
-
-  window.form = {
-    adForm: adForm,
-    fillInAddressField: fillInAddressField
-  };
+  window.util.adForm.addEventListener('submit', onFormSubmit);
 })();

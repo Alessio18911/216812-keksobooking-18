@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var mainPageContent = document.body.querySelector('main');
+
   var errorCodeMap = {
     '400': 'Неверный запрос',
     '401': 'Пользователь не авторизован',
@@ -8,26 +10,73 @@
   };
 
   function showError(errorMessage) {
-    var mainPageContent = document.body.querySelector('main');
     var errorTemplate = document.querySelector('#error').content;
     var errorWindow = errorTemplate.cloneNode(true).querySelector('.error');
     var errorText = errorWindow.querySelector('.error__message');
+    var errorButton = errorWindow.querySelector('.error__button');
     errorText.textContent = errorMessage;
 
     mainPageContent.appendChild(errorWindow);
     document.body.style.overflow = 'hidden';
+
+    function onWindowErrorClick() {
+      removeErrorPopup();
+    }
+
+    function onWindowErrorKeydown(evt) {
+      if (evt.keyCode === 27) {
+        removeErrorPopup();
+      }
+    }
+
+    errorButton.addEventListener('click', onWindowErrorClick);
+    document.addEventListener('click', onWindowErrorClick);
+    document.addEventListener('keydown', onWindowErrorKeydown);
   }
 
-  function load(onLoad) {
-    var url = 'https://js.dump.academy/keksobooking/data';
+  function showSuccess() {
+    var template = document.querySelector('#success').content;
+    var successWindow = template.cloneNode(true).querySelector('.success');
+
+    mainPageContent.appendChild(successWindow);
+    document.body.style.overflow = 'hidden';
+
+    function onWindowSuccessClick() {
+      removeSuccessPopup();
+    }
+
+    function onWindowSuccessKeydown(evt) {
+      if (evt.keyCode === 27) {
+        removeSuccessPopup();
+      }
+    }
+
+    document.addEventListener('click', onWindowSuccessClick);
+    document.addEventListener('keydown', onWindowSuccessKeydown);
+  }
+
+  function removeSuccessPopup() {
+    document.querySelector('.success').remove();
+    document.body.style.overflow = 'auto';
+  }
+
+  function removeErrorPopup() {
+    document.querySelector('.error').remove();
+    document.body.style.overflow = 'auto';
+  }
+
+  function httpRequest(url, method, data, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.send();
+    xhr.open(method, url);
+    xhr.send(data);
     xhr.timeout = 10000;
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onLoad(JSON.parse(xhr.responseText));
+        callback(JSON.parse(xhr.responseText));
+        if (method === 'POST') {
+          showSuccess();
+        }
         return;
       }
 
@@ -44,7 +93,18 @@
     });
   }
 
+  function load(data, onLoad) {
+    var url = 'https://js.dump.academy/keksobooking/data';
+    httpRequest(url, 'GET', data, onLoad);
+  }
+
+  function save(data, onLoad) {
+    var url = 'https://js.dump.academy/keksobooking';
+    httpRequest(url, 'POST', data, onLoad);
+  }
+
   window.backend = {
-    load: load
+    load: load,
+    save: save
   };
 })();
