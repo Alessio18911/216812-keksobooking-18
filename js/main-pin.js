@@ -12,16 +12,20 @@
 
   window.util.mainPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 13) {
-      window.util.activatePage();
-      window.backend.load(null, window.map.renderPins);
+      window.backend.load(null, window.util.loadPage);
     }
   });
+
+  function onMainPinImgClick(evt) {
+    window.backend.load(null, window.util.loadPage);
+    evt.target.removeEventListener('click', onMainPinImgClick);
+  }
+
+  mainPinImg.addEventListener('click', onMainPinImgClick);
 
   mainPinImg.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var isPageActive = !window.util.isPageActive;
-    window.util.activatePage();
-    window.backend.load(null, window.map.renderPins);
 
     var startCoords = {
       x: evt.clientX,

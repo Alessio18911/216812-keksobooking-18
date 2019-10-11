@@ -4,7 +4,6 @@
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 82;
 
-  var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var addressField = adForm.querySelector('#address');
   var dialogFields = document.querySelectorAll('fieldset, input, select, textarea');
@@ -12,6 +11,12 @@
   var isPageActive = false;
   var mainPinInitialTop = window.getComputedStyle(mainPin).getPropertyValue('top');
   var mainPinInitialLeft = window.getComputedStyle(mainPin).getPropertyValue('left');
+
+  function loadPage(data) {
+    window.map.pinsData = data;
+    activatePage();
+    window.map.renderPins(data);
+  }
 
   function getCoordsOfMainPin(flag) {
     var pinXCoord = mainPin.offsetLeft + parseInt(MAIN_PIN_WIDTH / 2, 10);
@@ -45,7 +50,7 @@
     var isActive = isPageActive;
     mainPin.style.top = mainPinInitialTop;
     mainPin.style.left = mainPinInitialLeft;
-    map.classList.add('map--faded');
+    window.map.map.classList.add('map--faded');
     adForm.reset();
     adForm.classList.add('ad-form--disabled');
     toggleDialogFieldsAvailability(isActive);
@@ -55,7 +60,7 @@
 
   function activatePage() {
     var isActive = !isPageActive;
-    map.classList.remove('map--faded');
+    window.map.map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     toggleDialogFieldsAvailability(isActive);
     getCoordsOfMainPin(isActive);
@@ -96,13 +101,14 @@
   window.util = {
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    map: map,
     adForm: adForm,
     mainPin: mainPin,
     isPageActive: isPageActive,
-    createList: createList,
     activatePage: activatePage,
+    clearMap: clearMap,
+    createList: createList,
     disablePage: disablePage,
-    getCoordsOfMainPin: getCoordsOfMainPin
+    getCoordsOfMainPin: getCoordsOfMainPin,
+    loadPage: loadPage
   };
 })();
