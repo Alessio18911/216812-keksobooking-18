@@ -9,6 +9,14 @@
     '404': 'Ничего не найдено'
   };
 
+  function onXhrError() {
+    showError('Произошла ошибка соединения');
+  }
+
+  function onXhrTimeout() {
+    showError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
+  }
+
   function showError(errorMessage) {
     var errorTemplate = document.querySelector('#error').content;
     var errorWindow = errorTemplate.cloneNode(true).querySelector('.error');
@@ -43,11 +51,13 @@
 
     function onWindowSuccessClick() {
       removeSuccessPopup();
+      document.removeEventListener('click', onWindowSuccessClick);
     }
 
     function onWindowSuccessKeydown(evt) {
       if (evt.keyCode === 27) {
         removeSuccessPopup();
+        document.removeEventListener('click', onWindowSuccessClick);
       }
     }
 
@@ -84,13 +94,8 @@
       showError('Ошибка ' + error);
     });
 
-    xhr.addEventListener('error', function () {
-      showError('Произошла ошибка соединения');
-    });
-
-    xhr.addEventListener('timeout', function () {
-      showError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
-    });
+    xhr.addEventListener('error', onXhrError);
+    xhr.addEventListener('timeout', onXhrTimeout);
   }
 
   function load(data, onLoad) {
