@@ -1,29 +1,72 @@
 'use strict';
 
 (function () {
-  var mapFilterForm = document.querySelector('.map__filters');
-  var locationTypeFilter = mapFilterForm.querySelector('#housing-type');
-  var priceFilter = mapFilterForm.querySelector('#housing-price');
-  var roomsFilter = mapFilterForm.querySelector('#housing-rooms');
-  var guestsFilter = mapFilterForm.querySelector('#housing-guests');
-  var wifiFilter = mapFilterForm.querySelector('#filter-wifi');
-  var dishwasherFilter = mapFilterForm.querySelector('#filter-dishwasher');
-  var parkingFilter = mapFilterForm.querySelector('#filter-parking');
-  var washerFilter = mapFilterForm.querySelector('#filter-washer');
-  var elevatorFilter = mapFilterForm.querySelector('#filter-elevator');
-  var conditionerFilter = mapFilterForm.querySelector('#filter-conditioner');
+  var mapFiltersForm = document.querySelector('.map__filters');
+  var mapFilters = mapFiltersForm.querySelectorAll('select, input[type="checkbox"]');
 
-  locationTypeFilter.addEventListener('change', function (evt) {
-    window.util.clearMap();
-    var type = evt.target.value;
-    var filteredPins = window.map.pinsData.slice();
+  function getSelectKeyValue(select, props) {
+    var selectId = select.id;
+    var key = selectId.split('-')[1];
+    props[key] = select.value;
+  }
 
-    if (type !== 'any') {
-      filteredPins = filteredPins.filter(function (location) {
-        return location.offer.type === type;
-      });
+  function getCheckboxValue(checkbox, features) {
+    features.push(checkbox.value);
+  }
+
+  function getFilteredPins(props, locations) {
+    var filteredPins = [];
+
+    locations.forEach(function (location) {
+      for (var key in props) {
+        if (key) {
+          if (key !== 'features' && props[key] !== location.offer[key].toString()) {
+            return;
+          }
+
+          if (key === 'features') {
+            var featuresAmount = props[key].length;
+            for (var feature = 0; feature < featuresAmount; feature++) {
+              if (!location.offer.features.includes(props[key][feature])) {
+                return;
+              }
+            }
+          }
+
+          filteredPins.push(location);
+        }
+      }
+    });
+
+    if (!filteredPins.length) {
+      filteredPins = locations.slice();
     }
 
     window.map.renderPins(filteredPins);
-  });
+  }
+
+  function onFiltersChange() {
+    window.util.clearMap();
+    var locations = window.map.pinsData.slice();
+    var properties = {};
+    var features = [];
+
+    mapFilters.forEach(function (item) {
+      if (item.tagName === 'SELECT' && item.value !== 'any') {
+        getSelectKeyValue(item, properties);
+      }
+
+      if (item.tagName === 'INPUT' && item.checked) {
+        getCheckboxValue(item, features);
+      }
+    });
+
+    if (features.length) {
+      properties.features = features;
+    }
+
+    getFilteredPins(properties, locations);
+  }
+
+  mapFiltersForm.addEventListener('change', onFiltersChange);
 })();
