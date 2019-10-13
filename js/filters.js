@@ -3,6 +3,11 @@
 (function () {
   var mapFiltersForm = document.querySelector('.map__filters');
   var mapFilters = mapFiltersForm.querySelectorAll('select, input[type="checkbox"]');
+  var priceMap = {
+    'low': [0, 10000],
+    'middle': [10000, 50000],
+    'high': [50000, Infinity]
+  };
 
   function getSelectKeyValue(select, props) {
     var selectId = select.id;
@@ -20,8 +25,15 @@
     locations.forEach(function (location) {
       for (var key in props) {
         if (key && props[key] !== 'any') {
-          if (key !== 'features' && props[key] !== location.offer[key].toString()) {
+          if (key !== 'features' && key !== 'price' && props[key] !== location.offer[key].toString()) {
             return;
+          }
+
+          if (key === 'price') {
+            var locationPrice = location.offer.price;
+            if (locationPrice < priceMap[props[key]][0] || locationPrice > priceMap[props[key]][1]) {
+              return;
+            }
           }
 
           if (key === 'features') {
