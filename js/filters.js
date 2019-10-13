@@ -65,11 +65,11 @@
     };
 
     mapFilters.forEach(function (item) {
-      if (item.tagName === 'SELECT') {
+      if (item.matches('.map__filter')) {
         getSelectKeyValue(item, properties);
       }
 
-      if (item.tagName === 'INPUT' && item.checked) {
+      if (item.matches('.map__checkbox') && item.checked) {
         getCheckboxValue(item, properties.features);
       }
     });
