@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var mapFiltersForm = document.querySelector('.map__filters');
   var mapFilters = mapFiltersForm.querySelectorAll('select, input[type="checkbox"]');
   var valuesOfFilters = {};
@@ -9,6 +10,17 @@
     'middle': [10000, 50000],
     'high': [50000, Infinity]
   };
+
+  function debounce(cb) {
+    var DEBOUNCE_INTERVAL = 5000;
+    var lastTimeout;
+
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+
+    window.setTimeout(cb, DEBOUNCE_INTERVAL);
+  }
 
   function renderFilteredPins(props, locations) {
     var filteredLocations = [];
@@ -48,7 +60,7 @@
     window.map.renderPins(filteredLocations);
   }
 
-  function onFiltersChange() {
+  function updateLocations() {
     window.map.clearMap();
     var locations = window.map.pinsData.slice();
     valuesOfFilters = {
@@ -72,6 +84,10 @@
     });
 
     renderFilteredPins(valuesOfFilters, locations);
+  }
+
+  function onFiltersChange() {
+    debounce(updateLocations);
   }
 
   mapFiltersForm.addEventListener('change', onFiltersChange);
