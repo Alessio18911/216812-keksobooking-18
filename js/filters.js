@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 500;
 
   var mapFiltersForm = document.querySelector('.map__filters');
   var mapFilters = mapFiltersForm.querySelectorAll('select, input[type="checkbox"]');
@@ -12,14 +13,15 @@
   };
 
   function debounce(cb) {
-    var DEBOUNCE_INTERVAL = 5000;
     var lastTimeout;
 
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
+    return function () {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
 
-    window.setTimeout(cb, DEBOUNCE_INTERVAL);
+      lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
+    };
   }
 
   function renderFilteredPins(props, locations) {
@@ -86,11 +88,7 @@
     renderFilteredPins(valuesOfFilters, locations);
   }
 
-  function onFiltersChange() {
-    debounce(updateLocations);
-  }
-
-  mapFiltersForm.addEventListener('change', onFiltersChange);
+  mapFiltersForm.addEventListener('change', debounce(updateLocations));
 
   window.filters = {
     mapFiltersForm: mapFiltersForm
