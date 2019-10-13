@@ -9,6 +9,13 @@
   var pinsData = [];
   var pinsContainer = map.querySelector('.map__pins');
 
+  function clearMap() {
+    var itemsToClear = document.querySelectorAll('.map__pin:not(.map__pin--main), .map__card');
+    itemsToClear.forEach(function (item) {
+      item.remove();
+    });
+  }
+
   function createAdvertisment(data) {
     var template = document.querySelector('#card').content;
     var advt = template.cloneNode(true).querySelector('.map__card');
@@ -95,6 +102,7 @@
   window.map = {
     map: map,
     pinsData: pinsData,
+    clearMap: clearMap,
     renderPins: renderPins
   };
 })();

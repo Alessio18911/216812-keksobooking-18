@@ -42,7 +42,7 @@
   }
 
   function onFiltersChange() {
-    window.util.clearMap();
+    window.map.clearMap();
     var locations = window.map.pinsData.slice();
     var properties = {
       'type': 'any',
@@ -66,4 +66,8 @@
   }
 
   mapFiltersForm.addEventListener('change', onFiltersChange);
+
+  window.filters = {
+    mapFiltersForm: mapFiltersForm
+  };
 })();

@@ -16,16 +16,10 @@
     }
   });
 
-  function onMainPinImgClick(evt) {
-    window.backend.load(null, window.util.loadPage);
-    evt.target.removeEventListener('click', onMainPinImgClick);
-  }
-
-  mainPinImg.addEventListener('click', onMainPinImgClick);
-
   mainPinImg.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var isPageActive = !window.util.isPageActive;
+    window.backend.load(null, window.util.loadPage);
 
     var startCoords = {
       x: evt.clientX,

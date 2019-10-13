@@ -25,13 +25,6 @@
     addressField.value = pinXCoord + ', ' + pinYCoord;
   }
 
-  function clearMap() {
-    var itemsToClear = document.querySelectorAll('.map__pin:not(.map__pin--main), .map__card');
-    itemsToClear.forEach(function (item) {
-      item.remove();
-    });
-  }
-
   function toggleDialogFieldsAvailability(flag) {
     if (!flag) {
       dialogFields.forEach(function (item) {
@@ -47,23 +40,24 @@
   }
 
   function disablePage() {
-    var isActive = isPageActive;
+    isPageActive = false;
     mainPin.style.top = mainPinInitialTop;
     mainPin.style.left = mainPinInitialLeft;
     window.map.map.classList.add('map--faded');
+    window.filters.mapFiltersForm.reset();
     adForm.reset();
     adForm.classList.add('ad-form--disabled');
-    toggleDialogFieldsAvailability(isActive);
-    clearMap();
-    getCoordsOfMainPin(isActive);
+    toggleDialogFieldsAvailability(isPageActive);
+    window.map.clearMap();
+    getCoordsOfMainPin(isPageActive);
   }
 
   function activatePage() {
-    var isActive = !isPageActive;
+    isPageActive = true;
     window.map.map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    toggleDialogFieldsAvailability(isActive);
-    getCoordsOfMainPin(isActive);
+    toggleDialogFieldsAvailability(isPageActive);
+    getCoordsOfMainPin(isPageActive);
   }
 
   function createList(item, list, content) {
@@ -105,7 +99,6 @@
     mainPin: mainPin,
     isPageActive: isPageActive,
     activatePage: activatePage,
-    clearMap: clearMap,
     createList: createList,
     disablePage: disablePage,
     getCoordsOfMainPin: getCoordsOfMainPin,
