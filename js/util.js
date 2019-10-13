@@ -4,8 +4,7 @@
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 82;
 
-  var adForm = document.querySelector('.ad-form');
-  var addressField = adForm.querySelector('#address');
+  var addressField = document.querySelector('#address');
   var dialogFields = document.querySelectorAll('fieldset, input, select, textarea');
   var mainPin = document.querySelector('.map__pin--main');
   var isPageActive = false;
@@ -45,8 +44,8 @@
     mainPin.style.left = mainPinInitialLeft;
     window.map.map.classList.add('map--faded');
     window.filters.mapFiltersForm.reset();
-    adForm.reset();
-    adForm.classList.add('ad-form--disabled');
+    window.form.adForm.reset();
+    window.form.adForm.classList.add('ad-form--disabled');
     toggleDialogFieldsAvailability(isPageActive);
     window.map.clearMap();
     getCoordsOfMainPin(isPageActive);
@@ -55,9 +54,10 @@
   function activatePage() {
     isPageActive = true;
     window.map.map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
+    window.form.adForm.classList.remove('ad-form--disabled');
     toggleDialogFieldsAvailability(isPageActive);
     getCoordsOfMainPin(isPageActive);
+    window.form.validateRoomsCapacity();
   }
 
   function createList(item, list, content) {
@@ -95,7 +95,6 @@
   window.util = {
     MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    adForm: adForm,
     mainPin: mainPin,
     isPageActive: isPageActive,
     activatePage: activatePage,

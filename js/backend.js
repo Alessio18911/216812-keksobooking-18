@@ -23,8 +23,10 @@
     mainPageContent.appendChild(errorWindow);
     document.body.style.overflow = 'hidden';
 
-    function onWindowErrorClick() {
-      removeErrorPopup();
+    function onWindowErrorClick(evt) {
+      if (!evt.target.matches('.error__message')) {
+        removeErrorPopup();
+      }
     }
 
     function onWindowErrorKeydown(evt) {
@@ -45,15 +47,15 @@
     mainPageContent.appendChild(successWindow);
     document.body.style.overflow = 'hidden';
 
-    function onWindowSuccessClick() {
-      removeSuccessPopup();
-      document.removeEventListener('click', onWindowSuccessClick);
+    function onWindowSuccessClick(evt) {
+      if (!evt.target.matches('.success__message')) {
+        removeSuccessPopup();
+      }
     }
 
     function onWindowSuccessKeydown(evt) {
       if (evt.keyCode === 27) {
         removeSuccessPopup();
-        document.removeEventListener('click', onWindowSuccessClick);
       }
     }
 

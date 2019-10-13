@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var adForm = document.querySelector('.ad-form');
   var locationTypeField = document.querySelector('#type');
   var locationPriceField = document.querySelector('#price');
   var timeInSelect = document.querySelector('#timein');
@@ -65,15 +66,18 @@
 
   function onFormSubmit(evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(window.util.adForm), window.util.disablePage);
+    window.backend.save(new FormData(adForm), window.util.disablePage);
   }
-
-  validateRoomsCapacity();
 
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
   guestsSelect.addEventListener('change', validateRoomsCapacity);
   roomsSelect.addEventListener('change', validateRoomsCapacity);
   timeInSelect.addEventListener('change', onTimeSelectsChange);
   timeOutSelect.addEventListener('change', onTimeSelectsChange);
-  window.util.adForm.addEventListener('submit', onFormSubmit);
+  adForm.addEventListener('submit', onFormSubmit);
+
+  window.form = {
+    adForm: adForm,
+    validateRoomsCapacity: validateRoomsCapacity
+  };
 })();
