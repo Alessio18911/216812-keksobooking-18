@@ -32,10 +32,10 @@
               }
             }
           }
-
-          filteredPins.push(location);
         }
       }
+
+      filteredPins.push(location);
     });
 
     if (!filteredPins.length) {
