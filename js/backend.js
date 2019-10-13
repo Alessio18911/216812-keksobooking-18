@@ -13,10 +13,6 @@
     showError('Произошла ошибка соединения');
   }
 
-  function onXhrTimeout() {
-    showError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
-  }
-
   function showError(errorMessage) {
     var errorTemplate = document.querySelector('#error').content;
     var errorWindow = errorTemplate.cloneNode(true).querySelector('.error');
@@ -95,7 +91,9 @@
     });
 
     xhr.addEventListener('error', onXhrError);
-    xhr.addEventListener('timeout', onXhrTimeout);
+    xhr.addEventListener('timeout', function () {
+      showError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
+    });
   }
 
   function load(data, onLoad) {
