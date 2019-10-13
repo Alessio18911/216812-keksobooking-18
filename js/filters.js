@@ -19,7 +19,7 @@
 
     locations.forEach(function (location) {
       for (var key in props) {
-        if (key) {
+        if (key && props[key] !== 'any') {
           if (key !== 'features' && props[key] !== location.offer[key].toString()) {
             return;
           }
@@ -38,32 +38,29 @@
       filteredPins.push(location);
     });
 
-    if (!filteredPins.length) {
-      filteredPins = locations.slice();
-    }
-
     window.map.renderPins(filteredPins);
   }
 
   function onFiltersChange() {
     window.util.clearMap();
     var locations = window.map.pinsData.slice();
-    var properties = {};
-    var features = [];
+    var properties = {
+      'type': 'any',
+      'price': 'any',
+      'rooms': 'any',
+      'guests': 'any',
+      'features': []
+    };
 
     mapFilters.forEach(function (item) {
-      if (item.tagName === 'SELECT' && item.value !== 'any') {
+      if (item.tagName === 'SELECT') {
         getSelectKeyValue(item, properties);
       }
 
       if (item.tagName === 'INPUT' && item.checked) {
-        getCheckboxValue(item, features);
+        getCheckboxValue(item, properties.features);
       }
     });
-
-    if (features.length) {
-      properties.features = features;
-    }
 
     getFilteredPins(properties, locations);
   }
