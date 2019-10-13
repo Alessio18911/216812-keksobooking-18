@@ -3,43 +3,38 @@
 (function () {
   var mapFiltersForm = document.querySelector('.map__filters');
   var mapFilters = mapFiltersForm.querySelectorAll('select, input[type="checkbox"]');
+  var valuesOfFilters = {};
   var priceMap = {
     'low': [0, 10000],
     'middle': [10000, 50000],
     'high': [50000, Infinity]
   };
 
-  function getSelectKeyValue(select, props) {
-    var selectId = select.id;
-    var key = selectId.split('-')[1];
-    props[key] = select.value;
-  }
-
-  function getCheckboxValue(checkbox, features) {
-    features.push(checkbox.value);
-  }
-
-  function getFilteredPins(props, locations) {
-    var filteredPins = [];
+  function renderFilteredPins(props, locations) {
+    var filteredLocations = [];
 
     locations.forEach(function (location) {
       for (var key in props) {
         if (key && props[key] !== 'any') {
-          if (key !== 'features' && key !== 'price' && props[key] !== location.offer[key].toString()) {
+          var propValue = props[key];
+          var locationValue = location.offer[key];
+          if (key !== 'features' && key !== 'price' && propValue !== locationValue.toString()) {
             return;
           }
 
           if (key === 'price') {
-            var locationPrice = location.offer.price;
-            if (locationPrice < priceMap[props[key]][0] || locationPrice > priceMap[props[key]][1]) {
+            var priceRange = priceMap[propValue];
+            var minPrice = priceRange[0];
+            var maxPrice = priceRange[1];
+            if (locationValue < minPrice || locationValue > maxPrice) {
               return;
             }
           }
 
           if (key === 'features') {
-            var featuresAmount = props[key].length;
-            for (var feature = 0; feature < featuresAmount; feature++) {
-              if (!location.offer.features.includes(props[key][feature])) {
+            var featuresNumber = propValue.length;
+            for (var i = 0; i < featuresNumber; i++) {
+              if (!locationValue.includes(propValue[i])) {
                 return;
               }
             }
@@ -47,16 +42,16 @@
         }
       }
 
-      filteredPins.push(location);
+      filteredLocations.push(location);
     });
 
-    window.map.renderPins(filteredPins);
+    window.map.renderPins(filteredLocations);
   }
 
   function onFiltersChange() {
     window.map.clearMap();
     var locations = window.map.pinsData.slice();
-    var properties = {
+    valuesOfFilters = {
       'type': 'any',
       'price': 'any',
       'rooms': 'any',
@@ -64,17 +59,19 @@
       'features': []
     };
 
-    mapFilters.forEach(function (item) {
-      if (item.matches('.map__filter')) {
-        getSelectKeyValue(item, properties);
+    mapFilters.forEach(function (filter) {
+      if (filter.matches('.map__checkbox') && filter.checked) {
+        valuesOfFilters.features.push(filter.value);
       }
 
-      if (item.matches('.map__checkbox') && item.checked) {
-        getCheckboxValue(item, properties.features);
+      if (filter.matches('.map__filter')) {
+        var selectId = filter.id;
+        var key = selectId.split('-')[1];
+        valuesOfFilters[key] = filter.value;
       }
     });
 
-    getFilteredPins(properties, locations);
+    renderFilteredPins(valuesOfFilters, locations);
   }
 
   mapFiltersForm.addEventListener('change', onFiltersChange);
