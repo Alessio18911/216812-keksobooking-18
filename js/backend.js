@@ -13,10 +13,6 @@
     showError('Произошла ошибка соединения');
   }
 
-  function onXhrTimeout() {
-    showError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
-  }
-
   function showError(errorMessage) {
     var errorTemplate = document.querySelector('#error').content;
     var errorWindow = errorTemplate.cloneNode(true).querySelector('.error');
@@ -27,8 +23,10 @@
     mainPageContent.appendChild(errorWindow);
     document.body.style.overflow = 'hidden';
 
-    function onWindowErrorClick() {
-      removeErrorPopup();
+    function onWindowErrorClick(evt) {
+      if (!evt.target.matches('.error__message')) {
+        removeErrorPopup();
+      }
     }
 
     function onWindowErrorKeydown(evt) {
@@ -49,15 +47,15 @@
     mainPageContent.appendChild(successWindow);
     document.body.style.overflow = 'hidden';
 
-    function onWindowSuccessClick() {
-      removeSuccessPopup();
-      document.removeEventListener('click', onWindowSuccessClick);
+    function onWindowSuccessClick(evt) {
+      if (!evt.target.matches('.success__message')) {
+        removeSuccessPopup();
+      }
     }
 
     function onWindowSuccessKeydown(evt) {
       if (evt.keyCode === 27) {
         removeSuccessPopup();
-        document.removeEventListener('click', onWindowSuccessClick);
       }
     }
 
@@ -95,7 +93,9 @@
     });
 
     xhr.addEventListener('error', onXhrError);
-    xhr.addEventListener('timeout', onXhrTimeout);
+    xhr.addEventListener('timeout', function () {
+      showError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
+    });
   }
 
   function load(data, onLoad) {
