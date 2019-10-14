@@ -24,39 +24,51 @@
     };
   }
 
+  function isPropEqual(props, property, location) {
+    var propValue = props[property];
+    var locationValue = location.offer[property];
+
+    if (property === 'rooms' || property === 'guests') {
+      locationValue = locationValue.toString();
+    }
+
+    if (propValue !== 'any' && propValue !== locationValue) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function isPriceInRange(props, location) {
+    var locationPrice = location.offer.price;
+    var propPrice = props.price;
+    if (propPrice !== 'any') {
+      if (locationPrice < priceMap[propPrice][0] || locationPrice > priceMap[propPrice][1]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function isFeaturesContain(props, location) {
+    var locationFeatures = location.offer.features;
+    var propsFeatures = props.features;
+
+    return propsFeatures.every(function (feature) {
+      return locationFeatures.includes(feature);
+    });
+  }
+
   function renderFilteredPins(props, locations) {
     var filteredLocations = [];
 
-    locations.forEach(function (location) {
-      for (var key in props) {
-        if (key && props[key] !== 'any') {
-          var propValue = props[key];
-          var locationValue = location.offer[key];
-          if (key !== 'features' && key !== 'price' && propValue !== locationValue.toString()) {
-            return;
-          }
-
-          if (key === 'price') {
-            var priceRange = priceMap[propValue];
-            var minPrice = priceRange[0];
-            var maxPrice = priceRange[1];
-            if (locationValue < minPrice || locationValue > maxPrice) {
-              return;
-            }
-          }
-
-          if (key === 'features') {
-            var featuresNumber = propValue.length;
-            for (var i = 0; i < featuresNumber; i++) {
-              if (!locationValue.includes(propValue[i])) {
-                return;
-              }
-            }
-          }
-        }
-      }
-
-      filteredLocations.push(location);
+    filteredLocations = locations.filter(function (location) {
+      return isPropEqual(props, 'type', location) &&
+             isPriceInRange(props, location) &&
+             isPropEqual(props, 'rooms', location) &&
+             isPropEqual(props, 'guests', location) &&
+             isFeaturesContain(props, location);
     });
 
     window.map.renderPins(filteredLocations);
