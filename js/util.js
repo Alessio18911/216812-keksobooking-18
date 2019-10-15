@@ -60,7 +60,7 @@
     window.form.validateRoomsCapacity();
   }
 
-  function createList(item, list, content) {
+  function createList(item, classes, list, content) {
     var element;
     var elementClasses;
     var fragment = document.createDocumentFragment();
@@ -69,7 +69,7 @@
     for (var i = 0; i < arrayLength; i++) {
       if (item === 'li') {
         element = document.createElement('li');
-        elementClasses = 'popup__feature popup__feature--' + content[i];
+        elementClasses = classes + content[i];
         element.className = elementClasses;
         element.textContent = content[i];
       }
