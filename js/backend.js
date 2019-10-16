@@ -26,12 +26,14 @@
     function onWindowErrorClick(evt) {
       if (!evt.target.matches('.error__message')) {
         removeErrorPopup();
+        document.removeEventListener('click', onWindowErrorClick);
       }
     }
 
     function onWindowErrorKeydown(evt) {
       if (evt.keyCode === 27) {
         removeErrorPopup();
+        document.removeEventListener('keydown', onWindowErrorKeydown);
       }
     }
 
@@ -50,12 +52,14 @@
     function onWindowSuccessClick(evt) {
       if (!evt.target.matches('.success__message')) {
         removeSuccessPopup();
+        document.removeEventListener('click', onWindowSuccessClick);
       }
     }
 
     function onWindowSuccessKeydown(evt) {
       if (evt.keyCode === 27) {
         removeSuccessPopup();
+        document.removeEventListener('keydown', onWindowSuccessKeydown);
       }
     }
 

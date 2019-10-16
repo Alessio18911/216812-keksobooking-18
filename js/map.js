@@ -38,11 +38,11 @@
 
     var accomodationFeatures = advt.querySelector('.popup__features');
     accomodationFeatures.textContent = '';
-    window.util.createList('li', accomodationFeatures, data.offer.features);
+    window.util.createList('li', 'popup__feature popup__feature--', accomodationFeatures, data.offer.features);
 
     var accomodationPhotos = advt.querySelector('.popup__photos');
     accomodationPhotos.textContent = '';
-    window.util.createList('img', accomodationPhotos, data.offer.photos);
+    window.util.createList('img', 'popup__photo', accomodationPhotos, data.offer.photos);
 
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === 27) {
