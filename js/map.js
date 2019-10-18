@@ -38,11 +38,11 @@
 
     var accomodationFeatures = advt.querySelector('.popup__features');
     accomodationFeatures.textContent = '';
-    window.util.createList('li', 'popup__feature popup__feature--', accomodationFeatures, data.offer.features);
+    window.util.createListOfLis('popup__feature popup__feature--', accomodationFeatures, data.offer.features);
 
     var accomodationPhotos = advt.querySelector('.popup__photos');
     accomodationPhotos.textContent = '';
-    window.util.createList('img', 'popup__photo', accomodationPhotos, data.offer.photos);
+    window.util.createListOfAdImages('popup__photo', accomodationPhotos, data.offer.photos);
 
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === 27) {
@@ -85,7 +85,7 @@
   }
 
   function renderPins(data) {
-    var truncatedData = limitNumberOfPins(data, 5);
+    var truncatedData = data.slice(0, 5);
     var fragment = document.createDocumentFragment();
 
     truncatedData.forEach(function (pin) {
@@ -93,10 +93,6 @@
     });
 
     pinsContainer.appendChild(fragment);
-  }
-
-  function limitNumberOfPins(pins, limit) {
-    return pins.slice(0, limit);
   }
 
   window.map = {

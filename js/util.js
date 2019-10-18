@@ -2,7 +2,9 @@
 
 (function () {
   var MAIN_PIN_WIDTH = 65;
+  var MAIN_PIN_HALF_WIDTH = MAIN_PIN_WIDTH / 2;
   var MAIN_PIN_HEIGHT = 82;
+  var NUMBER_SUSTEM = 10;
 
   var addressField = document.querySelector('#address');
   var dialogFields = document.querySelectorAll('fieldset, input, select, textarea');
@@ -18,8 +20,8 @@
   }
 
   function getCoordsOfMainPin(flag) {
-    var pinXCoord = mainPin.offsetLeft + parseInt(MAIN_PIN_WIDTH / 2, 10);
-    var pinYCoord = flag ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + parseInt(MAIN_PIN_WIDTH / 2, 10);
+    var pinXCoord = mainPin.offsetLeft + parseInt(MAIN_PIN_HALF_WIDTH, NUMBER_SUSTEM);
+    var pinYCoord = flag ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + parseInt(MAIN_PIN_HALF_WIDTH, NUMBER_SUSTEM);
 
     addressField.value = pinXCoord + ', ' + pinYCoord;
   }
@@ -60,34 +62,40 @@
     window.form.validateRoomsCapacity();
   }
 
-  function createList(item, classes, list, content) {
-    var element;
-    var elementClasses;
+  function createListOfLis(classes, listContainer, dataArray) {
     var fragment = document.createDocumentFragment();
-    var arrayLength = content.length;
+    var arrayLength = dataArray.length;
 
     for (var i = 0; i < arrayLength; i++) {
-      if (item === 'li') {
-        element = document.createElement('li');
-        elementClasses = classes + content[i];
-        element.className = elementClasses;
-        element.textContent = content[i];
-      }
-
-      if (item === 'img') {
-        element = document.createElement('img');
-        element.src = content[i];
-        element.classList.add('popup__photo');
-        element.width = 45;
-        element.height = 45;
-        element.alt = 'Фотография жилья';
-      }
+      var element = document.createElement('li');
+      var elementClasses = classes + dataArray[i];
+      element.className = elementClasses;
+      element.textContent = dataArray[i];
 
       fragment.appendChild(element);
     }
 
-    list.appendChild(fragment);
-    return list;
+    listContainer.appendChild(fragment);
+    return listContainer;
+  }
+
+  function createListOfAdImages(classes, listContainer, dataArray) {
+    var fragment = document.createDocumentFragment();
+    var arrayLength = dataArray.length;
+
+    for (var i = 0; i < arrayLength; i++) {
+      var element = document.createElement('img');
+      element.src = dataArray[i];
+      element.classList.add(classes);
+      element.width = 45;
+      element.height = 45;
+      element.alt = 'Фотография жилья';
+
+      fragment.appendChild(element);
+    }
+
+    listContainer.appendChild(fragment);
+    return listContainer;
   }
 
   disablePage();
@@ -98,7 +106,8 @@
     mainPin: mainPin,
     isPageActive: isPageActive,
     activatePage: activatePage,
-    createList: createList,
+    createListOfLis: createListOfLis,
+    createListOfAdImages: createListOfAdImages,
     disablePage: disablePage,
     getCoordsOfMainPin: getCoordsOfMainPin,
     loadPage: loadPage
