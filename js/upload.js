@@ -3,15 +3,6 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-  function createReader(img, file) {
-    var reader = new FileReader();
-    reader.addEventListener('load', function (evt) {
-      img.src = evt.target.result;
-    });
-
-    reader.readAsDataURL(file);
-  }
-
   function filterUploadedFiles(file) {
     var fileName = file.name.toLowerCase();
 
@@ -28,24 +19,13 @@
       var files = Array.from(avatarFileChooser.files);
       var matchedFiles = files.filter(filterUploadedFiles);
 
-      createReader(avatarImg, matchedFiles[0]);
+      var reader = new FileReader();
+      reader.addEventListener('load', function (evt) {
+        avatarImg.src = evt.target.result;
+      });
+
+      reader.readAsDataURL(matchedFiles[0]);
     });
-  }
-
-  function createLocationImages(filesArray, listContainer) {
-    var template = document.querySelector('#photo').content;
-    var documentFragment = document.createDocumentFragment();
-
-    filesArray.forEach(function (file) {
-      var adPhoto = template.cloneNode(true);
-      var photo = adPhoto.querySelector('img');
-
-      createReader(photo, file);
-
-      documentFragment.appendChild(adPhoto);
-    });
-
-    listContainer.appendChild(documentFragment);
   }
 
   function uploadLocationPhotos() {
@@ -57,11 +37,25 @@
       var uploadedFiles = Array.from(fileChooser.files);
       var matchedFiles = uploadedFiles.filter(filterUploadedFiles);
 
+      function onReaderLoad(evt) {
+        var template = document.querySelector('#photo').content;
+        var adPhoto = template.cloneNode(true);
+        var photo = adPhoto.querySelector('img');
+        photo.src = evt.target.result;
+        documentFragment.appendChild(adPhoto);
+      }
+
       if (matchedFiles.length) {
-        if (fileChooser.matches('#images')) {
-          createLocationImages(matchedFiles, adFormPhotoContainer);
-          dummy.remove();
-        }
+        var documentFragment = document.createDocumentFragment();
+
+        matchedFiles.forEach(function (file) {
+          var reader = new FileReader();
+          reader.addEventListener('load', onReaderLoad);
+          reader.readAsDataURL(file);
+        });
+
+        adFormPhotoContainer.appendChild(documentFragment);
+        dummy.remove();
       }
     });
   }
