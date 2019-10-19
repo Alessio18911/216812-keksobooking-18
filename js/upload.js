@@ -37,25 +37,27 @@
       var uploadedFiles = Array.from(fileChooser.files);
       var matchedFiles = uploadedFiles.filter(filterUploadedFiles);
 
-      function onReaderLoad(evt) {
-        var template = document.querySelector('#photo').content;
-        var adPhoto = template.cloneNode(true);
-        var photo = adPhoto.querySelector('img');
-        photo.src = evt.target.result;
-        documentFragment.appendChild(adPhoto);
+      function renderLocationPhotos(file) {
+        var reader = new FileReader();
+        reader.addEventListener('load', function (evt) {
+          var template = document.querySelector('#photo').content;
+          var adPhoto = template.cloneNode(true);
+          var photo = adPhoto.querySelector('img');
+          photo.src = evt.target.result;
+          adFormPhotoContainer.appendChild(adPhoto);
+        });
+
+        reader.readAsDataURL(file);
       }
 
       if (matchedFiles.length) {
-        var documentFragment = document.createDocumentFragment();
+        dummy.remove();
 
         matchedFiles.forEach(function (file) {
-          var reader = new FileReader();
-          reader.addEventListener('load', onReaderLoad);
-          reader.readAsDataURL(file);
+          renderLocationPhotos(file);
         });
 
-        adFormPhotoContainer.appendChild(documentFragment);
-        dummy.remove();
+        fileChooser.value = '';
       }
     });
   }
