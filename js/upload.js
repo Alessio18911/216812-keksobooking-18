@@ -3,6 +3,13 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
+  var avatarImg = document.querySelector('.ad-form-header__preview img');
+  var avatarFileChooser = document.querySelector('#avatar');
+
+  var adFormPhotoContainer = document.querySelector('.ad-form__photo-container');
+  var fileChooser = adFormPhotoContainer.querySelector('#images');
+  var dummy = adFormPhotoContainer.querySelector('.ad-form__photo');
+
   function filterUploadedFiles(file) {
     var fileName = file.name.toLowerCase();
 
@@ -12,12 +19,8 @@
   }
 
   function uploadAvatar() {
-    var avatarImg = document.querySelector('.ad-form-header__preview img');
-    var avatarFileChooser = document.querySelector('#avatar');
-
     avatarFileChooser.addEventListener('change', function () {
-      var files = Array.from(avatarFileChooser.files);
-      var matchedFiles = files.filter(filterUploadedFiles);
+      var matchedFiles = Array.from(avatarFileChooser.files).files.filter(filterUploadedFiles);
 
       var reader = new FileReader();
       reader.addEventListener('load', function (evt) {
@@ -29,13 +32,8 @@
   }
 
   function uploadLocationPhotos() {
-    var adFormPhotoContainer = document.querySelector('.ad-form__photo-container');
-    var fileChooser = adFormPhotoContainer.querySelector('#images');
-    var dummy = adFormPhotoContainer.querySelector('.ad-form__photo');
-
     fileChooser.addEventListener('change', function () {
-      var uploadedFiles = Array.from(fileChooser.files);
-      var matchedFiles = uploadedFiles.filter(filterUploadedFiles);
+      var matchedFiles = Array.from(fileChooser.files).filter(filterUploadedFiles);
 
       function renderLocationPhotos(file) {
         var reader = new FileReader();
