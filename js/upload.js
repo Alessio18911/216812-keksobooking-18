@@ -5,7 +5,6 @@
 
   var avatarImg = document.querySelector('.ad-form-header__preview img');
   var avatarFileChooser = document.querySelector('#avatar');
-
   var adFormPhotoContainer = document.querySelector('.ad-form__photo-container');
   var fileChooser = adFormPhotoContainer.querySelector('#images');
   var dummy = adFormPhotoContainer.querySelector('.ad-form__photo');
@@ -18,48 +17,48 @@
     });
   }
 
-  function uploadAvatar() {
-    avatarFileChooser.addEventListener('change', function () {
-      var matchedFiles = Array.from(avatarFileChooser.files).files.filter(filterUploadedFiles);
+  function uploadFiles(files, cb) {
+    var matchedFiles = Array.from(files).filter(filterUploadedFiles);
 
-      var reader = new FileReader();
-      reader.addEventListener('load', function (evt) {
-        avatarImg.src = evt.target.result;
-      });
+    function onReaderLoad(evt) {
+      cb(evt.target.result);
+    }
 
-      reader.readAsDataURL(matchedFiles[0]);
-    });
-  }
-
-  function uploadLocationPhotos() {
-    fileChooser.addEventListener('change', function () {
-      var matchedFiles = Array.from(fileChooser.files).filter(filterUploadedFiles);
-
-      function renderLocationPhotos(file) {
+    if (matchedFiles) {
+      matchedFiles.forEach(function (file) {
         var reader = new FileReader();
-        reader.addEventListener('load', function (evt) {
-          var template = document.querySelector('#photo').content;
-          var adPhoto = template.cloneNode(true);
-          var photo = adPhoto.querySelector('img');
-          photo.src = evt.target.result;
-          adFormPhotoContainer.appendChild(adPhoto);
-        });
-
+        reader.addEventListener('load', onReaderLoad);
         reader.readAsDataURL(file);
-      }
-
-      if (matchedFiles.length) {
-        dummy.remove();
-
-        matchedFiles.forEach(function (file) {
-          renderLocationPhotos(file);
-        });
-
-        fileChooser.value = '';
-      }
-    });
+      });
+    }
   }
 
-  uploadLocationPhotos();
-  uploadAvatar();
+  function uploadAvatar(src) {
+    avatarImg.src = src;
+  }
+
+  function uploadLocationPhotos(src) {
+    var template = document.querySelector('#photo').content;
+    var adPhoto = template.cloneNode(true);
+    var photo = adPhoto.querySelector('img');
+    photo.src = src;
+    adFormPhotoContainer.appendChild(adPhoto);
+
+    if (dummy) {
+      dummy.remove();
+    }
+
+    fileChooser.value = '';
+  }
+
+  function onAvatarFileChooserChange(evt) {
+    uploadFiles(evt.target.files, uploadAvatar);
+  }
+
+  function onFileChooserChange(evt) {
+    uploadFiles(evt.target.files, uploadLocationPhotos);
+  }
+
+  avatarFileChooser.addEventListener('change', onAvatarFileChooserChange);
+  fileChooser.addEventListener('change', onFileChooserChange);
 })();
