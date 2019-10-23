@@ -8,18 +8,22 @@
   var MAIN_PIN_X_MAX = MAP_MAX_WIDTH - MAIN_PIN_HALF_WIDTH;
   var MAIN_PIN_Y_MIN = 47;
   var MAIN_PIN_Y_MAX = MAP_MAX_HEIGHT - window.util.MAIN_PIN_HEIGHT;
+  var ENTER_KEY_CODE = 13;
+  var GET_DATA_URL = 'https://js.dump.academy/keksobooking/data';
+  var GET_METHOD = 'GET';
+
   var mainPinImg = document.querySelector('.map__pin--main img');
 
   window.util.mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 13) {
-      window.backend.load(null, window.util.loadPage);
+    if (evt.keyCode === ENTER_KEY_CODE) {
+      window.backend.httpRequest(GET_DATA_URL, GET_METHOD, window.util.loadPage);
     }
   });
 
   mainPinImg.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var isPageActive = !window.util.isPageActive;
-    window.backend.load(null, window.util.loadPage);
+    window.backend.httpRequest(GET_DATA_URL, GET_METHOD, window.util.loadPage);
 
     var startCoords = {
       x: evt.clientX,

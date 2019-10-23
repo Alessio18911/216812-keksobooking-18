@@ -1,8 +1,11 @@
 'use strict';
 
 (function () {
+  var ESCAPE_KEY_CODE = 27;
   var PIN_WIDTH = 50;
+  var PIN_HALF_WIDTH = PIN_WIDTH / 2;
   var PIN_HEIGHT = 70;
+  var PINS_AMOUNT = 5;
 
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
@@ -18,43 +21,43 @@
 
   function createAdvertisment(data) {
     var template = document.querySelector('#card').content;
-    var advt = template.cloneNode(true).querySelector('.map__card');
-    var advtCloseButton = advt.querySelector('.popup__close');
-    advtCloseButton.setAttribute('tabindex', '1');
+    var advert = template.cloneNode(true).querySelector('.map__card');
+    var advertCloseButton = advert.querySelector('.popup__close');
+    advertCloseButton.setAttribute('tabindex', '1');
 
-    advt.querySelector('.popup__avatar').src = data.author.avatar;
-    advt.querySelector('.popup__title').textContent = data.offer.title;
-    advt.querySelector('.popup__text--address').textContent =
+    advert.querySelector('.popup__avatar').src = data.author.avatar;
+    advert.querySelector('.popup__title').textContent = data.offer.title;
+    advert.querySelector('.popup__text--address').textContent =
       data.offer.address;
-    advt.querySelector('.popup__text--price').textContent =
+    advert.querySelector('.popup__text--price').textContent =
       data.offer.price + '₽/ночь';
-    advt.querySelector('.popup__type').textContent = data.offer.type;
-    advt.querySelector('.popup__text--capacity').textContent =
+    advert.querySelector('.popup__type').textContent = data.offer.type;
+    advert.querySelector('.popup__text--capacity').textContent =
       data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
-    advt.querySelector('.popup__text--time').textContent =
+    advert.querySelector('.popup__text--time').textContent =
       'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
-    advt.querySelector('.popup__description').textContent =
+    advert.querySelector('.popup__description').textContent =
       data.offer.description;
 
-    var accomodationFeatures = advt.querySelector('.popup__features');
+    var accomodationFeatures = advert.querySelector('.popup__features');
     accomodationFeatures.textContent = '';
     window.util.createListOfLis('popup__feature popup__feature--', accomodationFeatures, data.offer.features);
 
-    var accomodationPhotos = advt.querySelector('.popup__photos');
+    var accomodationPhotos = advert.querySelector('.popup__photos');
     accomodationPhotos.textContent = '';
     window.util.createListOfAdImages('popup__photo', accomodationPhotos, data.offer.photos);
 
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 27) {
-        advt.remove();
+      if (evt.keyCode === ESCAPE_KEY_CODE) {
+        advert.remove();
       }
     });
 
-    advtCloseButton.addEventListener('click', function (evt) {
+    advertCloseButton.addEventListener('click', function (evt) {
       evt.target.parentNode.remove();
     });
 
-    return advt;
+    return advert;
   }
 
   function createPin(elem) {
@@ -64,15 +67,10 @@
 
     pinImage.src = elem.author.avatar;
     pinImage.alt = elem.offer.title;
-    pin.style.left = elem.location.x - PIN_WIDTH / 2 + 'px';
+    pin.style.left = elem.location.x - PIN_HALF_WIDTH + 'px';
     pin.style.top = elem.location.y - PIN_HEIGHT + 'px';
 
     pin.addEventListener('click', function () {
-      var previousAdvt = document.querySelector('.map__card');
-      if (previousAdvt) {
-        previousAdvt.remove();
-      }
-
       renderAdvertisment(elem);
     });
 
@@ -80,12 +78,18 @@
   }
 
   function renderAdvertisment(data) {
+    var previousAdvert = document.querySelector('.map__card');
+
+    if (previousAdvert) {
+      previousAdvert.remove();
+    }
+
     var advertisment = createAdvertisment(data);
     map.insertBefore(advertisment, mapFiltersContainer);
   }
 
   function renderPins(data) {
-    var truncatedData = data.slice(0, 5);
+    var truncatedData = data.slice(0, PINS_AMOUNT);
     var fragment = document.createDocumentFragment();
 
     truncatedData.forEach(function (pin) {

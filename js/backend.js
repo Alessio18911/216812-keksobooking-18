@@ -1,13 +1,18 @@
 'use strict';
 
 (function () {
-  var mainPageContent = document.body.querySelector('main');
+  var ESC_KEY_CODE = 27;
+  var TIMEOUT = 10000;
+  var MILLISECONDS_IN_MINUTE = 1000;
+  var SUCCESS_CODE = 200;
 
   var errorCodeMap = {
     '400': 'Неверный запрос',
     '401': 'Пользователь не авторизован',
     '404': 'Ничего не найдено'
   };
+
+  var mainPageContent = document.body.querySelector('main');
 
   function onXhrError() {
     showError('Произошла ошибка соединения');
@@ -31,7 +36,7 @@
     }
 
     function onWindowErrorKeydown(evt) {
-      if (evt.keyCode === 27) {
+      if (evt.keyCode === ESC_KEY_CODE) {
         removeErrorPopup();
         document.removeEventListener('keydown', onWindowErrorKeydown);
       }
@@ -57,7 +62,7 @@
     }
 
     function onWindowSuccessKeydown(evt) {
-      if (evt.keyCode === 27) {
+      if (evt.keyCode === ESC_KEY_CODE) {
         removeSuccessPopup();
         document.removeEventListener('keydown', onWindowSuccessKeydown);
       }
@@ -77,16 +82,16 @@
     document.body.style.overflow = 'auto';
   }
 
-  function httpRequest(url, method, data, callback) {
+  function httpRequest(url, method, callback, data) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.send(data);
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT;
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCESS_CODE) {
         callback(JSON.parse(xhr.responseText));
-        if (method === 'POST') {
+        if (method === 'POST') { // 89
           showSuccess();
         }
         return;
@@ -98,22 +103,11 @@
 
     xhr.addEventListener('error', onXhrError);
     xhr.addEventListener('timeout', function () {
-      showError('Запрос не выполнился за ' + xhr.timeout / 1000 + ' секунд');
+      showError('Запрос не выполнился за ' + xhr.timeout / MILLISECONDS_IN_MINUTE + ' секунд');
     });
   }
 
-  function load(data, onLoad) {
-    var url = 'https://js.dump.academy/keksobooking/data';
-    httpRequest(url, 'GET', data, onLoad);
-  }
-
-  function save(data, onLoad) {
-    var url = 'https://js.dump.academy/keksobooking';
-    httpRequest(url, 'POST', data, onLoad);
-  }
-
   window.backend = {
-    load: load,
-    save: save
+    httpRequest: httpRequest
   };
 })();

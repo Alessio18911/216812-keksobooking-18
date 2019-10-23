@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var POST_DATA_URL = 'https://js.dump.academy/keksobooking';
+  var POST_METHOD = 'POST';
+
   var adForm = document.querySelector('.ad-form');
   var locationTypeField = document.querySelector('#type');
   var locationPriceField = document.querySelector('#price');
@@ -9,7 +12,7 @@
   var roomsSelect = document.querySelector('#room_number');
   var guestsSelect = document.querySelector('#capacity');
 
-  var rooms = {
+  var Rooms = {
     '1': {
       capacity: ['1'],
       errorText: 'В 1 комнате может быть не более 1 гостя'
@@ -31,19 +34,19 @@
     }
   };
 
-  var minPriceList = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+  var MinPriceList = {
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
   };
 
-  function validateRoomsCapacity() {
+  function onRoomsGuestsChange() { // 41
     var numberOfRooms = roomsSelect.value;
     var numberOfGguests = guestsSelect.value;
 
-    if (!rooms[numberOfRooms].capacity.includes(numberOfGguests)) {
-      guestsSelect.setCustomValidity(rooms[numberOfRooms].errorText);
+    if (!Rooms[numberOfRooms].capacity.includes(numberOfGguests)) {
+      guestsSelect.setCustomValidity(Rooms[numberOfRooms].errorText);
     } else {
       guestsSelect.setCustomValidity('');
     }
@@ -51,33 +54,37 @@
 
   function onLocationTypeFieldChange(evt) {
     var locationType = evt.target.value;
-    locationPriceField.setAttribute('min', minPriceList[locationType]);
-    locationPriceField.placeholder = minPriceList[locationType];
+    locationPriceField.setAttribute('min', MinPriceList[locationType]);
+    locationPriceField.placeholder = MinPriceList[locationType];
   }
 
   function onTimeSelectsChange(evt) {
-    if (evt.target.id === 'timein') {
-      timeOutSelect.value = evt.target.value;
-      return;
-    }
+    var target = evt.target;
 
-    timeInSelect.value = evt.target.value;
+    switch (target.id) {
+      case 'timein':
+        timeOutSelect.value = target.value;
+        break;
+
+      default:
+        timeInSelect.value = target.value;
+    }
   }
 
   function onFormSubmit(evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(adForm), window.util.disablePage);
+    window.backend.httpRequest(POST_DATA_URL, POST_METHOD, window.util.disablePage, new FormData(adForm));
   }
 
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
-  guestsSelect.addEventListener('change', validateRoomsCapacity);
-  roomsSelect.addEventListener('change', validateRoomsCapacity);
+  guestsSelect.addEventListener('change', onRoomsGuestsChange);
+  roomsSelect.addEventListener('change', onRoomsGuestsChange);
   timeInSelect.addEventListener('change', onTimeSelectsChange);
   timeOutSelect.addEventListener('change', onTimeSelectsChange);
   adForm.addEventListener('submit', onFormSubmit);
 
   window.form = {
     adForm: adForm,
-    validateRoomsCapacity: validateRoomsCapacity
+    onRoomsGuestsChange: onRoomsGuestsChange
   };
 })();

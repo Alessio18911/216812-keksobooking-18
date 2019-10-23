@@ -4,7 +4,6 @@
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HALF_WIDTH = MAIN_PIN_WIDTH / 2;
   var MAIN_PIN_HEIGHT = 82;
-  var NUMBER_SUSTEM = 10;
 
   var addressField = document.querySelector('#address');
   var dialogFields = document.querySelectorAll('fieldset, input, select, textarea');
@@ -20,8 +19,8 @@
   }
 
   function getCoordsOfMainPin(flag) {
-    var pinXCoord = mainPin.offsetLeft + parseInt(MAIN_PIN_HALF_WIDTH, NUMBER_SUSTEM);
-    var pinYCoord = flag ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + parseInt(MAIN_PIN_HALF_WIDTH, NUMBER_SUSTEM);
+    var pinXCoord = mainPin.offsetLeft + parseInt(MAIN_PIN_HALF_WIDTH, 10);
+    var pinYCoord = flag ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + parseInt(MAIN_PIN_HALF_WIDTH, 10);
 
     addressField.value = pinXCoord + ', ' + pinYCoord;
   }
@@ -59,7 +58,7 @@
     window.form.adForm.classList.remove('ad-form--disabled');
     toggleDialogFieldsAvailability(isPageActive);
     getCoordsOfMainPin(isPageActive);
-    window.form.validateRoomsCapacity();
+    window.form.onRoomsGuestsChange();
   }
 
   function createListOfLis(classes, listContainer, dataArray) {
