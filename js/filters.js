@@ -7,12 +7,23 @@
   var mapFilters = mapFiltersForm.querySelectorAll('select, input[type="checkbox"]');
   var valuesOfFilters = {};
   var priceMap = {
-    'low': [0, 10000],
-    'middle': [10000, 50000],
-    'high': [50000, Infinity]
+    'low': {
+      min: 0,
+      max: 10000
+    },
+
+    'middle': {
+      min: 10000,
+      max: 50000
+    },
+
+    'high': {
+      min: 50000,
+      max: Infinity
+    }
   };
 
-  function debounce(cb) {
+  function debounce(cb) { // 15
     var lastTimeout;
 
     return function () {
@@ -28,7 +39,7 @@
     var propValue = props[property];
     var locationValue = location.offer[property];
 
-    if (property === 'rooms' || property === 'guests') {
+    if (property === 'rooms' || property === 'guests') { // 31
       locationValue = locationValue.toString();
     }
 
@@ -43,7 +54,7 @@
     var locationPrice = location.offer.price;
     var propPrice = props.price;
     if (propPrice !== 'any') {
-      if (locationPrice < priceMap[propPrice][0] || locationPrice > priceMap[propPrice][1]) {
+      if (locationPrice < priceMap[propPrice].min || locationPrice > priceMap[propPrice].max) {
         return false;
       }
     }
@@ -85,7 +96,7 @@
       'features': []
     };
 
-    mapFilters.forEach(function (filter) {
+    mapFilters.forEach(function (filter) { // 88
       if (filter.matches('.map__checkbox') && filter.checked) {
         valuesOfFilters.features.push(filter.value);
       }
@@ -103,6 +114,6 @@
   mapFiltersForm.addEventListener('change', debounce(updateLocations));
 
   window.filters = {
-    mapFiltersForm: mapFiltersForm
+    mapFiltersForm: mapFiltersForm // 106
   };
 })();

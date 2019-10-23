@@ -41,7 +41,7 @@
     PALACE: 10000
   };
 
-  function onRoomsGuestsChange() { // 41
+  function onRoomsGuestsChange() {
     var numberOfRooms = roomsSelect.value;
     var numberOfGguests = guestsSelect.value;
 
@@ -53,7 +53,7 @@
   }
 
   function onLocationTypeFieldChange(evt) {
-    var locationType = evt.target.value;
+    var locationType = evt.target.value.toUpperCase();
     locationPriceField.setAttribute('min', MinPriceList[locationType]);
     locationPriceField.placeholder = MinPriceList[locationType];
   }
@@ -84,7 +84,6 @@
   adForm.addEventListener('submit', onFormSubmit);
 
   window.form = {
-    adForm: adForm,
-    onRoomsGuestsChange: onRoomsGuestsChange
+    adForm: adForm
   };
 })();

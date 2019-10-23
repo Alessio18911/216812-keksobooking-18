@@ -58,7 +58,6 @@
     window.form.adForm.classList.remove('ad-form--disabled');
     toggleDialogFieldsAvailability(isPageActive);
     getCoordsOfMainPin(isPageActive);
-    window.form.onRoomsGuestsChange();
   }
 
   function createListOfLis(classes, listContainer, dataArray) {
