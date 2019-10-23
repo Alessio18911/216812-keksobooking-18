@@ -4,8 +4,7 @@
   var DEBOUNCE_INTERVAL = 500;
 
   var mapFiltersForm = document.querySelector('.map__filters');
-  var mapFilters = mapFiltersForm.querySelectorAll('select, input[type="checkbox"]');
-  var valuesOfFilters = {};
+  var housingFeaturesFilters = Array.from(document.querySelectorAll('#housing-features input[type="checkbox"]'));
   var priceMap = {
     'low': {
       min: 0,
@@ -37,11 +36,7 @@
 
   function isPropEqual(props, property, location) {
     var propValue = props[property];
-    var locationValue = location.offer[property];
-
-    if (property === 'rooms' || property === 'guests') { // 31
-      locationValue = locationValue.toString();
-    }
+    var locationValue = location.offer[property].toString();
 
     if (propValue !== 'any' && propValue !== locationValue) {
       return false;
@@ -85,33 +80,28 @@
     window.map.renderPins(filteredLocations);
   }
 
-  function updateLocations() {
+  function onHousingFilterChange() {
     window.map.clearMap();
     var locations = window.map.pinsData.slice();
-    valuesOfFilters = {
-      'type': 'any',
-      'price': 'any',
-      'rooms': 'any',
-      'guests': 'any',
-      'features': []
-    };
-
-    mapFilters.forEach(function (filter) { // 88
-      if (filter.matches('.map__checkbox') && filter.checked) {
-        valuesOfFilters.features.push(filter.value);
-      }
-
-      if (filter.matches('.map__filter')) {
-        var selectId = filter.id;
-        var key = selectId.split('-')[1];
-        valuesOfFilters[key] = filter.value;
-      }
+    var features = housingFeaturesFilters.filter(function (feature) {
+      return feature.checked;
+    })
+    .map(function (inputChecked) {
+      return inputChecked.value;
     });
+
+    var valuesOfFilters = {
+      'type': document.querySelector('#housing-type').value,
+      'price': document.querySelector('#housing-price').value,
+      'rooms': document.querySelector('#housing-rooms').value,
+      'guests': document.querySelector('#housing-guests').value,
+      'features': features
+    };
 
     renderFilteredPins(valuesOfFilters, locations);
   }
 
-  mapFiltersForm.addEventListener('change', debounce(updateLocations));
+  mapFiltersForm.addEventListener('change', debounce(onHousingFilterChange));
 
   window.filters = {
     mapFiltersForm: mapFiltersForm // 106
