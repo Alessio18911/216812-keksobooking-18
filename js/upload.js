@@ -4,10 +4,25 @@
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var avatarImg = document.querySelector('.ad-form-header__preview img');
+  var avatarImgSrc = 'img/muffin-grey.svg';
   var avatarFileChooser = document.querySelector('#avatar');
   var adFormPhotoContainer = document.querySelector('.ad-form__photo-container');
   var fileChooser = adFormPhotoContainer.querySelector('#images');
   var dummy = adFormPhotoContainer.querySelector('.ad-form__photo');
+
+  function clearPreviews(chooser, elemsId, gag) {
+    chooser.value = '';
+
+    if (gag) {
+      document.querySelectorAll(elemsId).forEach(function (preview) {
+        preview.remove();
+      });
+
+      adFormPhotoContainer.appendChild(dummy);
+    } else {
+      avatarImg.src = avatarImgSrc;
+    }
+  }
 
   function filterUploadedFiles(file) {
     var fileName = file.name.toLowerCase();
@@ -38,6 +53,8 @@
   }
 
   function uploadLocationPhotos(src) {
+    fileChooser.value = '';
+
     var template = document.querySelector('#photo').content;
     var adPhoto = template.cloneNode(true);
     var photo = adPhoto.querySelector('img');
@@ -47,8 +64,6 @@
     if (dummy) {
       dummy.remove();
     }
-
-    fileChooser.value = '';
   }
 
   function onAvatarFileChooserChange(evt) {
@@ -61,4 +76,14 @@
 
   avatarFileChooser.addEventListener('change', onAvatarFileChooserChange);
   fileChooser.addEventListener('change', onFileChooserChange);
+
+  window.upload = {
+    avatarImg: avatarImg,
+    avatarImgSrc: avatarImgSrc,
+    avatarFileChooser: avatarFileChooser,
+    fileChooser: fileChooser,
+    adFormPhotoContainer: adFormPhotoContainer,
+    dummy: dummy,
+    clearPreviews: clearPreviews
+  };
 })();

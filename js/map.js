@@ -19,6 +19,12 @@
     });
   }
 
+  function removeElementClass(elem, className) {
+    if (elem) {
+      elem.classList.remove(className);
+    }
+  }
+
   function createAdvertisment(data) {
     var template = document.querySelector('#card').content;
     var advert = template.cloneNode(true).querySelector('.map__card');
@@ -50,11 +56,13 @@
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === ESCAPE_KEY_CODE) {
         advert.remove();
+        removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
       }
     });
 
     advertCloseButton.addEventListener('click', function (evt) {
       evt.target.parentNode.remove();
+      removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
     });
 
     return advert;
@@ -71,6 +79,8 @@
     pin.style.top = elem.location.y - PIN_HEIGHT + 'px';
 
     pin.addEventListener('click', function () {
+      removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
+      pin.classList.add('map__pin--active');
       renderAdvertisment(elem);
     });
 

@@ -38,23 +38,17 @@
     var propValue = props[property];
     var locationValue = location.offer[property].toString();
 
-    if (propValue !== 'any' && propValue !== locationValue) {
-      return false;
+    if (propValue === 'any' || propValue === locationValue) {
+      return true;
     }
-
-    return true;
   }
 
   function isPriceInRange(props, location) {
     var locationPrice = location.offer.price;
     var propPrice = props.price;
-    if (propPrice !== 'any') {
-      if (locationPrice < priceMap[propPrice].min || locationPrice > priceMap[propPrice].max) {
-        return false;
-      }
+    if (propPrice === 'any' || locationPrice > priceMap[propPrice].min && locationPrice < priceMap[propPrice].max) {
+      return true;
     }
-
-    return true;
   }
 
   function isFeaturesContain(props, location) {

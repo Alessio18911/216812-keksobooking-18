@@ -50,6 +50,13 @@
     toggleDialogFieldsAvailability(isPageActive);
     window.map.clearMap();
     getCoordsOfMainPin(isPageActive);
+    window.upload.avatarFileChooser.value = '';
+    window.upload.fileChooser.value = '';
+    document.querySelectorAll('.ad-form__photo').forEach(function (photo) {
+      photo.remove();
+    });
+    window.upload.clearPreviews(window.upload.avatarFileChooser);
+    window.upload.clearPreviews(window.upload.fileChooser, '.ad-form__photo', window.upload.dummy);
   }
 
   function activatePage() {
