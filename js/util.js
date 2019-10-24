@@ -44,7 +44,7 @@
     mainPin.style.top = mainPinInitialTop;
     mainPin.style.left = mainPinInitialLeft;
     window.map.map.classList.add('map--faded');
-    window.filters.mapFiltersForm.reset();
+    window.mapForm.mapFilters.reset();
     window.form.adForm.reset();
     window.form.adForm.classList.add('ad-form--disabled');
     toggleDialogFieldsAvailability(isPageActive);

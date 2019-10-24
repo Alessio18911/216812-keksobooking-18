@@ -3,7 +3,7 @@
 (function () {
   var DEBOUNCE_INTERVAL = 500;
 
-  var mapFiltersForm = document.querySelector('.map__filters');
+  var mapFilters = document.querySelector('.map__filters');
   var priceMap = {
     'low': {
       min: 0,
@@ -97,9 +97,9 @@
     renderFilteredPins(valuesOfFilters, locations);
   }
 
-  mapFiltersForm.addEventListener('change', debounce(onHousingFilterChange));
+  mapFilters.addEventListener('change', debounce(onHousingFilterChange));
 
-  window.filters = {
-    mapFiltersForm: mapFiltersForm // 106
+  window.mapForm = {
+    mapFilters: mapFilters
   };
 })();
