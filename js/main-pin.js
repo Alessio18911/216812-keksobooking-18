@@ -44,11 +44,11 @@
       var mainPinHorizontalPosition = window.util.mainPin.offsetLeft - shift.x;
       var mainPinVerticalPosition = window.util.mainPin.offsetTop - shift.y;
 
-      if (mainPinHorizontalPosition < MAIN_PIN_X_MAX && mainPinHorizontalPosition > MAIN_PIN_X_MIN) {
+      if (mainPinHorizontalPosition <= MAIN_PIN_X_MAX && mainPinHorizontalPosition > MAIN_PIN_X_MIN) {
         window.util.mainPin.style.left = mainPinHorizontalPosition + 'px';
       }
 
-      if (mainPinVerticalPosition < MAIN_PIN_Y_MAX && mainPinVerticalPosition > MAIN_PIN_Y_MIN) {
+      if (mainPinVerticalPosition <= MAIN_PIN_Y_MAX && mainPinVerticalPosition > MAIN_PIN_Y_MIN) {
         window.util.mainPin.style.top = mainPinVerticalPosition + 'px';
       }
 

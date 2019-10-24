@@ -4,7 +4,6 @@
   var DEBOUNCE_INTERVAL = 500;
 
   var mapFiltersForm = document.querySelector('.map__filters');
-  var housingFeaturesFilters = Array.from(document.querySelectorAll('#housing-features input[type="checkbox"]'));
   var priceMap = {
     'low': {
       min: 0,
@@ -37,18 +36,25 @@
   function isPropEqual(props, property, location) {
     var propValue = props[property];
     var locationValue = location.offer[property].toString();
+    var isEqual = false;
 
     if (propValue === 'any' || propValue === locationValue) {
-      return true;
+      isEqual = true;
     }
+
+    return isEqual;
   }
 
   function isPriceInRange(props, location) {
     var locationPrice = location.offer.price;
     var propPrice = props.price;
+    var isInRange = false;
+
     if (propPrice === 'any' || locationPrice > priceMap[propPrice].min && locationPrice < priceMap[propPrice].max) {
-      return true;
+      isInRange = true;
     }
+
+    return isInRange;
   }
 
   function isFeaturesContain(props, location) {
@@ -77,19 +83,15 @@
   function onHousingFilterChange() {
     window.map.clearMap();
     var locations = window.map.pinsData.slice();
-    var features = housingFeaturesFilters.filter(function (feature) {
-      return feature.checked;
-    })
-    .map(function (inputChecked) {
-      return inputChecked.value;
-    });
 
     var valuesOfFilters = {
       'type': document.querySelector('#housing-type').value,
       'price': document.querySelector('#housing-price').value,
       'rooms': document.querySelector('#housing-rooms').value,
       'guests': document.querySelector('#housing-guests').value,
-      'features': features
+      'features': Array.from(document.querySelectorAll('#housing-features input[type="checkbox"]:checked')).map(function (inputChecked) {
+        return inputChecked.value;
+      })
     };
 
     renderFilteredPins(valuesOfFilters, locations);
