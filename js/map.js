@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ESCAPE_KEY_CODE = 27;
   var PIN_WIDTH = 50;
   var PIN_HALF_WIDTH = PIN_WIDTH / 2;
   var PIN_HEIGHT = 70;
@@ -48,7 +47,7 @@
     window.util.createListOfAdImages('popup__photo', accomodationPhotos, data.offer.photos);
 
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === ESCAPE_KEY_CODE) {
+      if (evt.keyCode === window.util.ESC_KEY_CODE) {
         advert.remove();
         window.util.removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
       }
