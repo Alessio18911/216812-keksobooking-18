@@ -52,6 +52,7 @@
     getCoordsOfMainPin(isPageActive);
     window.upload.avatarFileChooser.value = '';
     window.upload.fileChooser.value = '';
+
     document.querySelectorAll('.ad-form__photo').forEach(function (photo) {
       photo.remove();
     });

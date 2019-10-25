@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var DEBOUNCE_INTERVAL = 500;
-
   var mapFilters = document.querySelector('.map__filters');
   var priceMap = {
     'low': {
@@ -20,18 +18,6 @@
       max: Infinity
     }
   };
-
-  function debounce(cb) { // 15
-    var lastTimeout;
-
-    return function () {
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
-
-      lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
-    };
-  }
 
   function isPropEqual(props, property, location) {
     var propValue = props[property];
@@ -71,10 +57,10 @@
 
     filteredLocations = locations.filter(function (location) {
       return isPropEqual(props, 'type', location) &&
-             isPriceInRange(props, location) &&
-             isPropEqual(props, 'rooms', location) &&
-             isPropEqual(props, 'guests', location) &&
-             isFeaturesContain(props, location);
+            isPriceInRange(props, location) &&
+            isPropEqual(props, 'rooms', location) &&
+            isPropEqual(props, 'guests', location) &&
+            isFeaturesContain(props, location);
     });
 
     window.map.renderPins(filteredLocations);
@@ -97,7 +83,7 @@
     renderFilteredPins(valuesOfFilters, locations);
   }
 
-  mapFilters.addEventListener('change', debounce(onHousingFilterChange));
+  mapFilters.addEventListener('change', window.common.debounce(onHousingFilterChange));
 
   window.mapForm = {
     mapFilters: mapFilters
