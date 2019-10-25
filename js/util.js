@@ -1,72 +1,11 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HALF_WIDTH = MAIN_PIN_WIDTH / 2;
-  var MAIN_PIN_HEIGHT = 82;
+  var DEBOUNCE_INTERVAL = 500;
+  var ESC_KEY_CODE = 27;
 
-  var addressField = document.querySelector('#address');
+  var mainPageContent = document.body.querySelector('main');
   var dialogFields = document.querySelectorAll('fieldset, input, select, textarea');
-  var mainPin = document.querySelector('.map__pin--main');
-  var isPageActive = false;
-  var mainPinInitialTop = window.getComputedStyle(mainPin).getPropertyValue('top');
-  var mainPinInitialLeft = window.getComputedStyle(mainPin).getPropertyValue('left');
-
-  function loadPage(data) {
-    window.map.pinsData = data;
-    activatePage();
-    window.map.renderPins(data);
-  }
-
-  function getCoordsOfMainPin(flag) {
-    var pinXCoord = mainPin.offsetLeft + parseInt(MAIN_PIN_HALF_WIDTH, 10);
-    var pinYCoord = flag ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + parseInt(MAIN_PIN_HALF_WIDTH, 10);
-
-    addressField.value = pinXCoord + ', ' + pinYCoord;
-  }
-
-  function toggleDialogFieldsAvailability(flag) {
-    if (!flag) {
-      dialogFields.forEach(function (item) {
-        item.setAttribute('disabled', true);
-      });
-
-      return;
-    }
-
-    dialogFields.forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-  }
-
-  function disablePage() {
-    isPageActive = false;
-    mainPin.style.top = mainPinInitialTop;
-    mainPin.style.left = mainPinInitialLeft;
-    window.map.map.classList.add('map--faded');
-    window.mapForm.mapFilters.reset();
-    window.form.adForm.reset();
-    window.form.adForm.classList.add('ad-form--disabled');
-    toggleDialogFieldsAvailability(isPageActive);
-    window.map.clearMap();
-    getCoordsOfMainPin(isPageActive);
-    window.upload.avatarFileChooser.value = '';
-    window.upload.fileChooser.value = '';
-
-    document.querySelectorAll('.ad-form__photo').forEach(function (photo) {
-      photo.remove();
-    });
-    window.upload.clearPreviews(window.upload.avatarFileChooser);
-    window.upload.clearPreviews(window.upload.fileChooser, '.ad-form__photo', window.upload.dummy);
-  }
-
-  function activatePage() {
-    isPageActive = true;
-    window.map.map.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
-    toggleDialogFieldsAvailability(isPageActive);
-    getCoordsOfMainPin(isPageActive);
-  }
 
   function createListOfLis(classes, listContainer, dataArray) {
     var fragment = document.createDocumentFragment();
@@ -104,18 +43,68 @@
     return listContainer;
   }
 
-  disablePage();
+  function toggleDialogFieldsAvailability(flag) {
+    dialogFields.forEach(function (item) {
+      item.disabled = !flag;
+    });
+  }
+
+  function debounce(cb) {
+    var lastTimeout;
+
+    return function () {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+
+      lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
+    };
+  }
+
+  function removeElementClass(elem, className) {
+    if (elem) {
+      elem.classList.remove(className);
+    }
+  }
+
+  function showSuccess() {
+    var template = document.querySelector('#success').content;
+    var successWindow = template.cloneNode(true).querySelector('.success');
+
+    mainPageContent.appendChild(successWindow);
+    document.body.style.overflow = 'hidden';
+
+    function onWindowSuccessClick(evt) {
+      if (!evt.target.matches('.success__message')) {
+        removeSuccessPopup();
+        document.removeEventListener('click', onWindowSuccessClick);
+      }
+    }
+
+    function onWindowSuccessKeydown(evt) {
+      if (evt.keyCode === ESC_KEY_CODE) {
+        removeSuccessPopup();
+        document.removeEventListener('keydown', onWindowSuccessKeydown);
+      }
+    }
+
+    document.addEventListener('click', onWindowSuccessClick);
+    document.addEventListener('keydown', onWindowSuccessKeydown);
+  }
+
+  function removeSuccessPopup() {
+    document.querySelector('.success').remove();
+    document.body.style.overflow = 'auto';
+  }
 
   window.util = {
-    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
-    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
-    mainPin: mainPin,
-    isPageActive: isPageActive,
-    activatePage: activatePage,
+    ESC_KEY_CODE: ESC_KEY_CODE,
+    mainPageContent: mainPageContent,
+    debounce: debounce,
     createListOfLis: createListOfLis,
     createListOfAdImages: createListOfAdImages,
-    disablePage: disablePage,
-    getCoordsOfMainPin: getCoordsOfMainPin,
-    loadPage: loadPage
+    removeElementClass: removeElementClass,
+    showSuccess: showSuccess,
+    toggleDialogFieldsAvailability: toggleDialogFieldsAvailability
   };
 })();

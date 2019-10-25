@@ -1,3 +1,4 @@
+
 'use strict';
 
 (function () {
@@ -83,7 +84,7 @@
     renderFilteredPins(valuesOfFilters, locations);
   }
 
-  mapFilters.addEventListener('change', window.common.debounce(onHousingFilterChange));
+  mapFilters.addEventListener('change', window.util.debounce(onHousingFilterChange));
 
   window.mapForm = {
     mapFilters: mapFilters

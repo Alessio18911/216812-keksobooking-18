@@ -5,6 +5,7 @@
   var POST_METHOD = 'POST';
 
   var adForm = document.querySelector('.ad-form');
+  var addressField = document.querySelector('#address');
   var locationTypeField = document.querySelector('#type');
   var locationPriceField = document.querySelector('#price');
   var timeInSelect = document.querySelector('#timein');
@@ -73,7 +74,7 @@
 
   function onFormSubmit(evt) {
     evt.preventDefault();
-    window.backend.httpRequest(POST_DATA_URL, POST_METHOD, window.util.disablePage, new FormData(adForm));
+    window.backend.httpRequest(POST_DATA_URL, POST_METHOD, disablePage, new FormData(adForm));
   }
 
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
@@ -84,6 +85,7 @@
   adForm.addEventListener('submit', onFormSubmit);
 
   window.form = {
-    adForm: adForm
+    adForm: adForm,
+    addressField: addressField
   };
 })();
