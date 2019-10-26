@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAP_MAX_WIDTH = 1200;
+  var MAP_MAX_HEIGHT = 630;
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 82;
   var MAIN_PIN_HALF_WIDTH = MAIN_PIN_WIDTH / 2;
@@ -8,8 +10,6 @@
   var MAIN_PIN_X_MAX = MAP_MAX_WIDTH - MAIN_PIN_HALF_WIDTH;
   var MAIN_PIN_Y_MIN = 47;
   var MAIN_PIN_Y_MAX = MAP_MAX_HEIGHT - MAIN_PIN_HEIGHT;
-  var MAP_MAX_WIDTH = 1200;
-  var MAP_MAX_HEIGHT = 630;
   var GET_DATA_URL = 'https://js.dump.academy/keksobooking/data';
   var GET_METHOD = 'GET';
   var ENTER_KEY_CODE = 13;
@@ -94,12 +94,12 @@
         mainPin.style.top = mainPinVerticalPosition + 'px';
       }
 
-      // getCoordsOfMainPin(true);
+      getCoordsOfMainPin(true);
     }
 
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
-      // getCoordsOfMainPin(false);
+      getCoordsOfMainPin(true);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
