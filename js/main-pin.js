@@ -50,9 +50,7 @@
       window.util.toggleDialogFieldsAvailability(data);
     }
 
-    if (method === 'POST') {
-      window.backend.showSuccess();
-    }
+    window.backend.showSuccess(method);
   }
 
   mainPin.addEventListener('keydown', function (evt) {

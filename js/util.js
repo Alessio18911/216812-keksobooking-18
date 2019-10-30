@@ -67,29 +67,30 @@
     }
   }
 
-  function showSuccess() {
-    var template = document.querySelector('#success').content;
-    var successWindow = template.cloneNode(true).querySelector('.success');
-
-    mainPageContent.appendChild(successWindow);
-    document.body.style.overflow = 'hidden';
-
-    function onWindowSuccessClick(evt) {
-      if (!evt.target.matches('.success__message')) {
-        removeSuccessPopup();
-        document.removeEventListener('click', onWindowSuccessClick);
-      }
+  function onWindowSuccessClick(evt) {
+    if (!evt.target.matches('.success__message')) {
+      removeSuccessPopup();
+      document.removeEventListener('click', onWindowSuccessClick);
     }
+  }
 
-    function onWindowSuccessKeydown(evt) {
-      if (evt.keyCode === ESC_KEY_CODE) {
-        removeSuccessPopup();
-        document.removeEventListener('keydown', onWindowSuccessKeydown);
-      }
+  function onWindowSuccessKeydown(evt) {
+    if (evt.keyCode === ESC_KEY_CODE) {
+      removeSuccessPopup();
+      document.removeEventListener('keydown', onWindowSuccessKeydown);
     }
+  }
 
-    document.addEventListener('click', onWindowSuccessClick);
-    document.addEventListener('keydown', onWindowSuccessKeydown);
+  function showSuccess(method) {
+    if (method === 'POST') {
+      var template = document.querySelector('#success').content;
+      var successWindow = template.cloneNode(true).querySelector('.success');
+
+      mainPageContent.appendChild(successWindow);
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('click', onWindowSuccessClick);
+      document.addEventListener('keydown', onWindowSuccessKeydown);
+    }
   }
 
   function removeSuccessPopup() {
