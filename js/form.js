@@ -41,6 +41,11 @@
     PALACE: 10000
   };
 
+  function setMinPrice(locationType) {
+    locationPriceField.setAttribute('min', MinPriceList[locationType]);
+    locationPriceField.placeholder = MinPriceList[locationType];
+  }
+
   function onRoomsGuestsChange() {
     var numberOfRooms = roomsSelect.value;
     var numberOfGguests = guestsSelect.value;
@@ -54,8 +59,7 @@
 
   function onLocationTypeFieldChange(evt) {
     var locationType = evt.target.value.toUpperCase();
-    locationPriceField.setAttribute('min', MinPriceList[locationType]);
-    locationPriceField.placeholder = MinPriceList[locationType];
+    setMinPrice(locationType);
   }
 
   function onTimeSelectsChange(evt) {
@@ -81,6 +85,8 @@
     adForm: adForm,
     addressField: addressField,
     adFormSubmit: adFormSubmit,
-    adFormReset: adFormReset
+    adFormReset: adFormReset,
+    locationTypeField: locationTypeField,
+    setMinPrice: setMinPrice
   };
 })();

@@ -42,6 +42,7 @@
     window.upload.clearPreviews(window.upload.fileChooser, '.ad-form__photo', window.upload.dummy);
     getCoordsOfMainPin();
     window.utils.toggleDialogFieldsAvailability();
+    window.form.setMinPrice(window.form.locationTypeField.value.toUpperCase());
 
     if (data) {
       window.map.pinsData = data;
