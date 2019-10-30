@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  var POST_DATA_URL = 'https://js.dump.academy/keksobooking';
-  var POST_METHOD = 'POST';
-
   var adForm = document.querySelector('.ad-form');
   var addressField = document.querySelector('#address');
   var locationTypeField = document.querySelector('#type');
@@ -12,6 +9,8 @@
   var timeOutSelect = document.querySelector('#timeout');
   var roomsSelect = document.querySelector('#room_number');
   var guestsSelect = document.querySelector('#capacity');
+  var adFormSubmit = document.querySelector('.ad-form__submit');
+  var adFormReset = document.querySelector('.ad-form__reset');
 
   var Rooms = {
     '1': {
@@ -72,20 +71,16 @@
     }
   }
 
-  function onFormSubmit(evt) {
-    evt.preventDefault();
-    window.backend.httpRequest(POST_DATA_URL, POST_METHOD, disablePage, new FormData(adForm));
-  }
-
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
   guestsSelect.addEventListener('change', onRoomsGuestsChange);
   roomsSelect.addEventListener('change', onRoomsGuestsChange);
   timeInSelect.addEventListener('change', onTimeSelectsChange);
   timeOutSelect.addEventListener('change', onTimeSelectsChange);
-  adForm.addEventListener('submit', onFormSubmit);
 
   window.form = {
     adForm: adForm,
-    addressField: addressField
+    addressField: addressField,
+    adFormSubmit: adFormSubmit,
+    adFormReset: adFormReset
   };
 })();

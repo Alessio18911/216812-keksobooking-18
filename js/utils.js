@@ -81,16 +81,14 @@
     }
   }
 
-  function showSuccess(method) {
-    if (method === 'POST') {
-      var template = document.querySelector('#success').content;
-      var successWindow = template.cloneNode(true).querySelector('.success');
+  function showSuccess() {
+    var template = document.querySelector('#success').content;
+    var successWindow = template.cloneNode(true).querySelector('.success');
 
-      mainPageContent.appendChild(successWindow);
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('click', onWindowSuccessClick);
-      document.addEventListener('keydown', onWindowSuccessKeydown);
-    }
+    mainPageContent.appendChild(successWindow);
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('click', onWindowSuccessClick);
+    document.addEventListener('keydown', onWindowSuccessKeydown);
   }
 
   function removeSuccessPopup() {
@@ -98,7 +96,7 @@
     document.body.style.overflow = 'auto';
   }
 
-  window.util = {
+  window.utils = {
     ESC_KEY_CODE: ESC_KEY_CODE,
     mainPageContent: mainPageContent,
     debounce: debounce,

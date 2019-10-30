@@ -6,6 +6,13 @@
   var PIN_HEIGHT = 70;
   var PINS_AMOUNT = 5;
 
+  var translationMap = {
+    bungalo: 'Бунгало',
+    flat: 'Квартира',
+    house: 'Дом',
+    palace: 'Дворец'
+  };
+
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
   var pinsData = [];
@@ -30,7 +37,7 @@
       data.offer.address;
     advert.querySelector('.popup__text--price').textContent =
       data.offer.price + '₽/ночь';
-    advert.querySelector('.popup__type').textContent = data.offer.type;
+    advert.querySelector('.popup__type').textContent = translationMap[data.offer.type];
     advert.querySelector('.popup__text--capacity').textContent =
       data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
     advert.querySelector('.popup__text--time').textContent =
@@ -40,22 +47,22 @@
 
     var accomodationFeatures = advert.querySelector('.popup__features');
     accomodationFeatures.textContent = '';
-    window.util.createListOfLis('popup__feature popup__feature--', accomodationFeatures, data.offer.features);
+    window.utils.createListOfLis('popup__feature popup__feature--', accomodationFeatures, data.offer.features);
 
     var accomodationPhotos = advert.querySelector('.popup__photos');
     accomodationPhotos.textContent = '';
-    window.util.createListOfAdImages('popup__photo', accomodationPhotos, data.offer.photos);
+    window.utils.createListOfAdImages('popup__photo', accomodationPhotos, data.offer.photos);
 
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.util.ESC_KEY_CODE) {
+      if (evt.keyCode === window.utils.ESC_KEY_CODE) {
         advert.remove();
-        window.util.removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
+        window.utils.removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
       }
     });
 
     advertCloseButton.addEventListener('click', function (evt) {
       evt.target.parentNode.remove();
-      window.util.removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
+      window.utils.removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
     });
 
     return advert;
@@ -72,7 +79,7 @@
     pin.style.top = elem.location.y - PIN_HEIGHT + 'px';
 
     pin.addEventListener('click', function () {
-      window.util.removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
+      window.utils.removeElementClass(document.querySelector('.map__pin--active'), 'map__pin--active');
       pin.classList.add('map__pin--active');
       renderAdvertisment(elem);
     });
@@ -91,15 +98,17 @@
     map.insertBefore(advertisment, mapFiltersContainer);
   }
 
-  function renderPins(data) {
-    var truncatedData = data.slice(0, PINS_AMOUNT);
-    var fragment = document.createDocumentFragment();
+  function renderPins(data, method) {
+    if (method !== 'POST') {
+      var truncatedData = data.slice(0, PINS_AMOUNT);
+      var fragment = document.createDocumentFragment();
 
-    truncatedData.forEach(function (pin) {
-      fragment.appendChild(createPin(pin));
-    });
+      truncatedData.forEach(function (pin) {
+        fragment.appendChild(createPin(pin));
+      });
 
-    pinsContainer.appendChild(fragment);
+      pinsContainer.appendChild(fragment);
+    }
   }
 
   window.map = {

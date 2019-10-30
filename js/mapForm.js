@@ -84,7 +84,7 @@
     renderFilteredPins(valuesOfFilters, locations);
   }
 
-  mapFilters.addEventListener('change', window.util.debounce(onHousingFilterChange));
+  mapFilters.addEventListener('change', window.utils.debounce(onHousingFilterChange));
 
   window.mapForm = {
     mapFilters: mapFilters

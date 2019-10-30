@@ -22,7 +22,7 @@
     var errorButton = errorWindow.querySelector('.error__button');
     errorText.textContent = errorMessage;
 
-    window.util.mainPageContent.appendChild(errorWindow);
+    window.utils.mainPageContent.appendChild(errorWindow);
     document.body.style.overflow = 'hidden';
 
     function onWindowErrorClick(evt) {
@@ -33,7 +33,7 @@
     }
 
     function onWindowErrorKeydown(evt) {
-      if (evt.keyCode === window.util.ESC_KEY_CODE) {
+      if (evt.keyCode === window.utils.ESC_KEY_CODE) {
         removeErrorPopup();
         document.removeEventListener('keydown', onWindowErrorKeydown);
       }

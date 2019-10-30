@@ -41,16 +41,20 @@
     window.upload.clearPreviews(window.upload.avatarFileChooser);
     window.upload.clearPreviews(window.upload.fileChooser, '.ad-form__photo', window.upload.dummy);
     getCoordsOfMainPin();
-    window.util.toggleDialogFieldsAvailability();
+    window.utils.toggleDialogFieldsAvailability();
 
     if (data) {
       window.map.pinsData = data;
-      window.map.renderPins(data);
+      window.map.renderPins(data, method);
       getCoordsOfMainPin(data);
-      window.util.toggleDialogFieldsAvailability(data);
+      window.utils.toggleDialogFieldsAvailability(data);
     }
 
-    window.backend.showSuccess(method);
+    if (method === 'POST') {
+      getCoordsOfMainPin();
+      window.utils.toggleDialogFieldsAvailability();
+      window.utils.showSuccess();
+    }
   }
 
   mainPin.addEventListener('keydown', function (evt) {
