@@ -53,8 +53,6 @@
   }
 
   function uploadLocationPhotos(src) {
-    fileChooser.value = '';
-
     var template = document.querySelector('#photo').content;
     var adPhoto = template.cloneNode(true);
     var photo = adPhoto.querySelector('img');
