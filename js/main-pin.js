@@ -57,13 +57,17 @@
 
   mainPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEY_CODE) {
-      window.backend.httpRequest(GET_DATA_URL, GET_METHOD, togglePageAvailability);
+      if (!window.map.pinsData.length) {
+        window.backend.httpRequest(GET_DATA_URL, GET_METHOD, togglePageAvailability);
+      }
     }
   });
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    window.backend.httpRequest(GET_DATA_URL, GET_METHOD, togglePageAvailability);
+    if (!window.map.pinsData.length) {
+      window.backend.httpRequest(GET_DATA_URL, GET_METHOD, togglePageAvailability);
+    }
 
     var startCoords = {
       x: evt.clientX,
@@ -86,7 +90,7 @@
       var mainPinHorizontalPosition = mainPin.offsetLeft - shift.x;
       var mainPinVerticalPosition = mainPin.offsetTop - shift.y;
 
-      if (mainPinHorizontalPosition <= MAIN_PIN_X_MAX && mainPinHorizontalPosition > MAIN_PIN_X_MIN) {
+      if (mainPinHorizontalPosition <= MAIN_PIN_X_MAX && mainPinHorizontalPosition >= MAIN_PIN_X_MIN) {
         mainPin.style.left = mainPinHorizontalPosition + 'px';
       }
 
