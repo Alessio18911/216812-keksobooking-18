@@ -2,6 +2,7 @@
 
 (function () {
   var DEBOUNCE_INTERVAL = 500;
+  var ENTER_KEY_CODE = 13;
   var ESC_KEY_CODE = 27;
 
   var mainPageContent = document.body.querySelector('main');
@@ -98,6 +99,7 @@
 
   window.utils = {
     ESC_KEY_CODE: ESC_KEY_CODE,
+    ENTER_KEY_CODE: ENTER_KEY_CODE,
     mainPageContent: mainPageContent,
     debounce: debounce,
     createListOfLis: createListOfLis,

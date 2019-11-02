@@ -2,17 +2,17 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
-  var addressField = document.querySelector('#address');
-  var locationTypeField = document.querySelector('#type');
-  var locationPriceField = document.querySelector('#price');
-  var timeInSelect = document.querySelector('#timein');
-  var timeOutSelect = document.querySelector('#timeout');
-  var roomsSelect = document.querySelector('#room_number');
-  var guestsSelect = document.querySelector('#capacity');
-  var adFormSubmit = document.querySelector('.ad-form__submit');
-  var adFormReset = document.querySelector('.ad-form__reset');
+  var addressField = adForm.querySelector('#address');
+  var locationTypeField = adForm.querySelector('#type');
+  var locationPriceField = adForm.querySelector('#price');
+  var timeInSelect = adForm.querySelector('#timein');
+  var timeOutSelect = adForm.querySelector('#timeout');
+  var roomsSelect = adForm.querySelector('#room_number');
+  var guestsSelect = adForm.querySelector('#capacity');
+  var adFormSubmit = adForm.querySelector('.ad-form__submit');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
 
-  var Rooms = {
+  var roomsToCapacity = {
     '1': {
       capacity: ['1'],
       errorText: 'В 1 комнате может быть не более 1 гостя'
@@ -34,7 +34,7 @@
     }
   };
 
-  var MinPriceList = {
+  var MinPrice = {
     BUNGALO: 0,
     FLAT: 1000,
     HOUSE: 5000,
@@ -42,24 +42,23 @@
   };
 
   function setMinPrice(locationType) {
-    locationPriceField.setAttribute('min', MinPriceList[locationType]);
-    locationPriceField.placeholder = MinPriceList[locationType];
+    locationPriceField.setAttribute('min', MinPrice[locationType]);
+    locationPriceField.placeholder = MinPrice[locationType];
   }
 
   function onRoomsGuestsChange() {
     var numberOfRooms = roomsSelect.value;
-    var numberOfGguests = guestsSelect.value;
+    var numberOfGuests = guestsSelect.value;
 
-    if (!Rooms[numberOfRooms].capacity.includes(numberOfGguests)) {
-      guestsSelect.setCustomValidity(Rooms[numberOfRooms].errorText);
+    if (!roomsToCapacity[numberOfRooms].capacity.includes(numberOfGuests)) {
+      guestsSelect.setCustomValidity(roomsToCapacity[numberOfRooms].errorText);
     } else {
       guestsSelect.setCustomValidity('');
     }
   }
 
   function onLocationTypeFieldChange(evt) {
-    var locationType = evt.target.value.toUpperCase();
-    setMinPrice(locationType);
+    setMinPrice(evt.target.value.toUpperCase());
   }
 
   function onTimeSelectsChange(evt) {

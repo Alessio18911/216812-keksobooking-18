@@ -12,17 +12,16 @@
   var MAIN_PIN_Y_MAX = MAP_MAX_HEIGHT - MAIN_PIN_HEIGHT;
   var GET_DATA_URL = 'https://js.dump.academy/keksobooking/data';
   var GET_METHOD = 'GET';
-  var ENTER_KEY_CODE = 13;
 
   var mainPin = document.querySelector('.map__pin--main');
   var mainPinInitialTop = window.getComputedStyle(mainPin).getPropertyValue('top');
   var mainPinInitialLeft = window.getComputedStyle(mainPin).getPropertyValue('left');
 
-  function getCoordsOfMainPin(data) {
-    var pinXCoord = mainPin.offsetLeft + parseInt(MAIN_PIN_HALF_WIDTH, 10);
-    var pinYCoord = data ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + parseInt(MAIN_PIN_HALF_WIDTH, 10);
+  function setCoordsOfMainPin(data) {
+    var pinX = mainPin.offsetLeft + parseInt(MAIN_PIN_HALF_WIDTH, 10);
+    var pinY = data ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + parseInt(MAIN_PIN_HALF_WIDTH, 10);
 
-    window.form.addressField.value = pinXCoord + ', ' + pinYCoord;
+    window.form.addressField.value = pinX + ', ' + pinY;
   }
 
   function togglePageAvailability(data, method) {
@@ -33,33 +32,31 @@
     mainPin.style.top = mainPinInitialTop;
     mainPin.style.left = mainPinInitialLeft;
     window.mapForm.mapFilters.reset();
-    window.upload.avatarFileChooser.value = '';
-    window.upload.fileChooser.value = '';
     document.querySelectorAll('.ad-form__photo').forEach(function (photo) {
       photo.remove();
     });
     window.upload.clearPreviews(window.upload.avatarFileChooser);
     window.upload.clearPreviews(window.upload.fileChooser, '.ad-form__photo', window.upload.dummy);
-    getCoordsOfMainPin();
+    setCoordsOfMainPin();
     window.utils.toggleDialogFieldsAvailability();
     window.form.setMinPrice(window.form.locationTypeField.value.toUpperCase());
 
     if (data) {
       window.map.pinsData = data;
       window.map.renderPins(data, method);
-      getCoordsOfMainPin(data);
+      setCoordsOfMainPin(data);
       window.utils.toggleDialogFieldsAvailability(data);
     }
 
     if (method === 'POST') {
-      getCoordsOfMainPin();
+      setCoordsOfMainPin();
       window.utils.toggleDialogFieldsAvailability();
       window.utils.showSuccess();
     }
   }
 
   mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEY_CODE) {
+    if (evt.keyCode === window.utils.ENTER_KEY_CODE) {
       if (!window.map.pinsData.length) {
         window.backend.httpRequest(GET_DATA_URL, GET_METHOD, togglePageAvailability);
       }
@@ -101,12 +98,12 @@
         mainPin.style.top = mainPinVerticalPosition + 'px';
       }
 
-      getCoordsOfMainPin(true);
+      setCoordsOfMainPin(true);
     }
 
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
-      getCoordsOfMainPin(true);
+      setCoordsOfMainPin(true);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);

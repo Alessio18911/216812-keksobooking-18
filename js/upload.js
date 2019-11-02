@@ -25,10 +25,8 @@
   }
 
   function filterUploadedFiles(file) {
-    var fileName = file.name.toLowerCase();
-
     return FILE_TYPES.some(function (ext) {
-      return fileName.endsWith(ext);
+      return file.name.toLowerCase().endsWith(ext);
     });
   }
 
@@ -55,8 +53,7 @@
   function uploadLocationPhotos(src) {
     var template = document.querySelector('#photo').content;
     var adPhoto = template.cloneNode(true);
-    var photo = adPhoto.querySelector('img');
-    photo.src = src;
+    adPhoto.querySelector('img').src = src;
     adFormPhotoContainer.appendChild(adPhoto);
 
     if (dummy) {

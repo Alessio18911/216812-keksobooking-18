@@ -1,4 +1,3 @@
-
 'use strict';
 
 (function () {
@@ -23,25 +22,15 @@
   function isPropEqual(props, property, location) {
     var propValue = props[property];
     var locationValue = location.offer[property].toString();
-    var isEqual = false;
 
-    if (propValue === 'any' || propValue === locationValue) {
-      isEqual = true;
-    }
-
-    return isEqual;
+    return propValue === 'any' || propValue === locationValue ? true : false;
   }
 
   function isPriceInRange(props, location) {
     var locationPrice = location.offer.price;
     var propPrice = props.price;
-    var isInRange = false;
 
-    if (propPrice === 'any' || locationPrice > priceMap[propPrice].min && locationPrice < priceMap[propPrice].max) {
-      isInRange = true;
-    }
-
-    return isInRange;
+    return propPrice === 'any' || locationPrice > priceMap[propPrice].min && locationPrice < priceMap[propPrice].max ? true : false;
   }
 
   function isFeaturesContain(props, location) {
@@ -54,9 +43,7 @@
   }
 
   function renderFilteredPins(props, locations) {
-    var filteredLocations = [];
-
-    filteredLocations = locations.filter(function (location) {
+    var filteredLocations = locations.filter(function (location) {
       return isPropEqual(props, 'type', location) &&
             isPriceInRange(props, location) &&
             isPropEqual(props, 'rooms', location) &&
@@ -69,7 +56,6 @@
 
   function onHousingFilterChange() {
     window.map.clearMap();
-    var locations = window.map.pinsData.slice();
 
     var valuesOfFilters = {
       'type': document.querySelector('#housing-type').value,
@@ -81,7 +67,7 @@
       })
     };
 
-    renderFilteredPins(valuesOfFilters, locations);
+    renderFilteredPins(valuesOfFilters, window.map.pinsData.slice());
   }
 
   mapFilters.addEventListener('change', window.utils.debounce(onHousingFilterChange));

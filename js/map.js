@@ -6,7 +6,7 @@
   var PIN_HEIGHT = 70;
   var PINS_AMOUNT = 5;
 
-  var translationMap = {
+  var accomodationTypeDict = {
     bungalo: 'Бунгало',
     flat: 'Квартира',
     house: 'Дом',
@@ -16,7 +16,6 @@
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
   var pinsData = [];
-  var pinsContainer = map.querySelector('.map__pins');
 
   function clearMap() {
     var itemsToClear = document.querySelectorAll('.map__pin:not(.map__pin--main), .map__card');
@@ -25,11 +24,10 @@
     });
   }
 
-  function createAdvertisment(data) {
+  function getAdvert(data) {
     var template = document.querySelector('#card').content;
     var advert = template.cloneNode(true).querySelector('.map__card');
     var advertCloseButton = advert.querySelector('.popup__close');
-    advertCloseButton.setAttribute('tabindex', '1');
 
     advert.querySelector('.popup__avatar').src = data.author.avatar;
     advert.querySelector('.popup__title').textContent = data.offer.title;
@@ -37,7 +35,7 @@
       data.offer.address;
     advert.querySelector('.popup__text--price').textContent =
       data.offer.price + '₽/ночь';
-    advert.querySelector('.popup__type').textContent = translationMap[data.offer.type];
+    advert.querySelector('.popup__type').textContent = accomodationTypeDict[data.offer.type];
     advert.querySelector('.popup__text--capacity').textContent =
       data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
     advert.querySelector('.popup__text--time').textContent =
@@ -68,7 +66,7 @@
     return advert;
   }
 
-  function createPin(elem) {
+  function getPin(elem) {
     var template = document.querySelector('#pin');
     var pin = template.cloneNode(true).content.querySelector('.map__pin');
     var pinImage = pin.querySelector('img');
@@ -94,20 +92,19 @@
       previousAdvert.remove();
     }
 
-    var advertisment = createAdvertisment(data);
-    map.insertBefore(advertisment, mapFiltersContainer);
+    map.insertBefore(getAdvert(data), mapFiltersContainer);
   }
 
   function renderPins(data, method) {
     if (method !== 'POST') {
-      var truncatedData = data.slice(0, PINS_AMOUNT);
+      var pins = map.querySelector('.map__pins');
       var fragment = document.createDocumentFragment();
 
-      truncatedData.forEach(function (pin) {
-        fragment.appendChild(createPin(pin));
+      data.slice(0, PINS_AMOUNT).forEach(function (pin) {
+        fragment.appendChild(getPin(pin));
       });
 
-      pinsContainer.appendChild(fragment);
+      pins.appendChild(fragment);
     }
   }
 

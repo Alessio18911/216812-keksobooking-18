@@ -2,7 +2,7 @@
 
 (function () {
   var TIMEOUT = 10000;
-  var MILLISECONDS_IN_MINUTE = 1000;
+  var MILLISECONDS_PER_MINUTE = 1000;
   var SUCCESS_CODE = 200;
 
   var errorCodeMap = {
@@ -49,7 +49,7 @@
     document.body.style.overflow = 'auto';
   }
 
-  function httpRequest(url, method, callback, data) {
+  function httpRequest(url, method, cb, data) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.send(data);
@@ -58,7 +58,7 @@
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
         case SUCCESS_CODE:
-          callback(JSON.parse(xhr.responseText), method);
+          cb(JSON.parse(xhr.responseText), method);
           break;
 
         default:
@@ -69,7 +69,7 @@
 
     xhr.addEventListener('error', onXhrError);
     xhr.addEventListener('timeout', function () {
-      showError('Запрос не выполнился за ' + xhr.timeout / MILLISECONDS_IN_MINUTE + ' секунд');
+      showError('Запрос не выполнился за ' + xhr.timeout / MILLISECONDS_PER_MINUTE + ' секунд');
     });
   }
 

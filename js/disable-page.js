@@ -5,7 +5,7 @@
   var POST_METHOD = 'POST';
 
   function onFormSubmit(evt) {
-    evt.preventDefault(evt);
+    evt.preventDefault();
     window.backend.httpRequest(POST_DATA_URL, POST_METHOD, window.mainPin.togglePageAvailability, new FormData(window.form.adForm));
   }
 
