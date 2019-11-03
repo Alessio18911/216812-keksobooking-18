@@ -15,6 +15,27 @@
     showError('Произошла ошибка соединения');
   }
 
+  function removeErrorPopup() {
+    var errorWindow = document.querySelector('.error');
+
+    if (errorWindow) {
+      errorWindow.remove();
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  function onWindowErrorClick(evt) {
+    if (!evt.target.matches('.error__message')) {
+      removeErrorPopup();
+    }
+  }
+
+  function onWindowErrorKeydown(evt) {
+    if (evt.keyCode === window.utils.ESC_KEY_CODE) {
+      removeErrorPopup();
+    }
+  }
+
   function showError(errorMessage) {
     var errorTemplate = document.querySelector('#error').content;
     var errorWindow = errorTemplate.cloneNode(true).querySelector('.error');
@@ -25,28 +46,9 @@
     window.utils.mainPageContent.appendChild(errorWindow);
     document.body.style.overflow = 'hidden';
 
-    function onWindowErrorClick(evt) {
-      if (!evt.target.matches('.error__message')) {
-        removeErrorPopup();
-        document.removeEventListener('click', onWindowErrorClick);
-      }
-    }
-
-    function onWindowErrorKeydown(evt) {
-      if (evt.keyCode === window.utils.ESC_KEY_CODE) {
-        removeErrorPopup();
-        document.removeEventListener('keydown', onWindowErrorKeydown);
-      }
-    }
-
     errorButton.addEventListener('click', onWindowErrorClick);
     document.addEventListener('click', onWindowErrorClick);
     document.addEventListener('keydown', onWindowErrorKeydown);
-  }
-
-  function removeErrorPopup() {
-    document.querySelector('.error').remove();
-    document.body.style.overflow = 'auto';
   }
 
   function httpRequest(url, method, cb, data) {

@@ -93,8 +93,12 @@
   }
 
   function removeSuccessPopup() {
-    document.querySelector('.success').remove();
-    document.body.style.overflow = 'auto';
+    var successWindow = document.querySelector('.success');
+
+    if (successWindow) {
+      successWindow.remove();
+      document.body.style.overflow = 'auto';
+    }
   }
 
   window.utils = {

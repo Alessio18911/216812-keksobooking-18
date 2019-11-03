@@ -93,6 +93,7 @@
     }
 
     map.insertBefore(getAdvert(data), mapFiltersContainer);
+    document.querySelector('.map__card .popup__close').focus();
   }
 
   function renderPins(data, method) {
