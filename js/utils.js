@@ -72,12 +72,14 @@
     if (!evt.target.matches('.success__message')) {
       removeSuccessPopup();
       document.removeEventListener('click', onWindowSuccessClick);
+      document.removeEventListener('keydown', onWindowSuccessKeydown);
     }
   }
 
   function onWindowSuccessKeydown(evt) {
     if (evt.keyCode === ESC_KEY_CODE) {
       removeSuccessPopup();
+      document.removeEventListener('click', onWindowSuccessClick);
       document.removeEventListener('keydown', onWindowSuccessKeydown);
     }
   }

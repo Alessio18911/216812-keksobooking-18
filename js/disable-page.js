@@ -1,12 +1,11 @@
 'use strict';
 
 (function () {
-  var POST_DATA_URL = 'https://js.dump.academy/keksobooking';
-  var POST_METHOD = 'POST';
+  var POST_DATA_URL = 'https://js.dmp.academy/keksobooking';
 
   function onFormSubmit(evt) {
     evt.preventDefault();
-    window.backend.httpRequest(POST_DATA_URL, POST_METHOD, window.mainPin.togglePageAvailability, new FormData(window.form.adForm));
+    window.backend.httpRequest(POST_DATA_URL, 'POST', window.mainPin.togglePageAvailability, new FormData(window.form.adForm));
   }
 
   function onResetBtnClick() {
