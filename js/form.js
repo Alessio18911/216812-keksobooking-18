@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var POST_DATA_URL = 'https://js.dump.academy/keksobooking';
+
   var adForm = document.querySelector('.ad-form');
   var addressField = adForm.querySelector('#address');
   var locationTypeField = adForm.querySelector('#type');
@@ -9,7 +11,6 @@
   var timeOutSelect = adForm.querySelector('#timeout');
   var roomsSelect = adForm.querySelector('#room_number');
   var guestsSelect = adForm.querySelector('#capacity');
-  var adFormSubmit = adForm.querySelector('.ad-form__submit');
   var adFormReset = adForm.querySelector('.ad-form__reset');
 
   var roomsToCapacity = {
@@ -74,17 +75,29 @@
     }
   }
 
+  function onFormSubmit(evt) {
+    evt.preventDefault();
+    window.backend.httpRequest(POST_DATA_URL, 'POST', window.mainPin.onXhrPostSuccess, new FormData(window.form.adForm));
+    window.mainPin.setDefaultCoordsOfMainPin();
+  }
+
+  function onResetBtnClick() {
+    window.map.pinsData = [];
+    window.mainPin.setDefaultCoordsOfMainPin();
+    window.mainPin.onXhrPostSuccess();
+  }
+
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
   guestsSelect.addEventListener('change', onRoomsGuestsChange);
   roomsSelect.addEventListener('change', onRoomsGuestsChange);
   timeInSelect.addEventListener('change', onTimeSelectsChange);
   timeOutSelect.addEventListener('change', onTimeSelectsChange);
+  adForm.addEventListener('submit', onFormSubmit);
+  adFormReset.addEventListener('click', onResetBtnClick);
 
   window.form = {
     adForm: adForm,
     addressField: addressField,
-    adFormSubmit: adFormSubmit,
-    adFormReset: adFormReset,
     locationTypeField: locationTypeField,
     setMinPrice: setMinPrice
   };
