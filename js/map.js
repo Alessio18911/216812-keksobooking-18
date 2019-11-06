@@ -96,17 +96,15 @@
     document.querySelector('.map__card .popup__close').focus();
   }
 
-  function renderPins(data, method) {
-    if (method !== 'POST') {
-      var pins = map.querySelector('.map__pins');
-      var fragment = document.createDocumentFragment();
+  function renderPins(data) {
+    var pins = map.querySelector('.map__pins');
+    var fragment = document.createDocumentFragment();
 
-      data.slice(0, PINS_AMOUNT).forEach(function (pin) {
-        fragment.appendChild(getPin(pin));
-      });
+    data.slice(0, PINS_AMOUNT).forEach(function (pin) {
+      fragment.appendChild(getPin(pin));
+    });
 
-      pins.appendChild(fragment);
-    }
+    pins.appendChild(fragment);
   }
 
   window.map = {

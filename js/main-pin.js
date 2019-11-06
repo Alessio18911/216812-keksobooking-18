@@ -16,13 +16,6 @@
   var mainPinInitialTop = window.getComputedStyle(mainPin).getPropertyValue('top');
   var mainPinInitialLeft = window.getComputedStyle(mainPin).getPropertyValue('left');
 
-  function togglePageAvailability(data) {
-    window.map.map.classList.toggle('map--faded');
-    window.form.adForm.classList.toggle('ad-form--disabled');
-    setAddressCoords(data);
-    window.utils.toggleDialogFieldsAvailability(data);
-  }
-
   function setAddressCoords(data) {
     var pinX = mainPin.offsetLeft + MAIN_PIN_HALF_WIDTH;
     var pinY = data ? mainPin.offsetTop + MAIN_PIN_HEIGHT : mainPin.offsetTop + MAIN_PIN_HALF_WIDTH;
@@ -35,9 +28,16 @@
     mainPin.style.left = mainPinInitialLeft;
   }
 
-  function onXhrLoadSuccess(data, method) {
+  function togglePageAvailability(data) {
+    window.map.map.classList.toggle('map--faded');
+    window.form.adForm.classList.toggle('ad-form--disabled');
+    setAddressCoords(data);
+    window.utils.toggleDialogFieldsAvailability(data);
+  }
+
+  function onXhrLoadSuccess(data) {
     window.map.pinsData = data;
-    window.map.renderPins(data, method);
+    window.map.renderPins(data);
     togglePageAvailability(data);
   }
 
