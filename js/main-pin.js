@@ -52,6 +52,15 @@
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
+    if (!window.map.pinsData.length) {
+      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
+    }
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
     function onMouseMove(moveEvt) {
       moveEvt.preventDefault();
 
@@ -76,28 +85,20 @@
         mainPin.style.top = mainPinVerticalPosition + 'px';
       }
 
-      setAddressCoords(true);
+      setAddressCoords(window.map.pinsData.length);
     }
 
     function onMouseUp(upEvt) {
       upEvt.preventDefault();
-      setAddressCoords(true);
+      setAddressCoords(window.map.pinsData.length);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     }
 
-    if (!window.map.pinsData.length) {
-      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
-    } else {
-      var startCoords = {
-        x: evt.clientX,
-        y: evt.clientY
-      };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
 
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    }
   });
 
   togglePageAvailability();
