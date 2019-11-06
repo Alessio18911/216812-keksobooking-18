@@ -28,20 +28,24 @@
     mainPin.style.left = mainPinInitialLeft;
   }
 
-  function onXhrPostSuccess(data, method) {
+  function togglePageAvailability() {
     window.map.map.classList.toggle('map--faded');
-    window.map.clearMap();
     window.form.adForm.classList.toggle('ad-form--disabled');
+    setAddressCoords();
+    window.utils.toggleDialogFieldsAvailability();
+  }
+
+  function onXhrPostSuccess(data, method) {
     window.form.adForm.reset();
     window.mapForm.mapFilters.reset();
+    window.map.clearMap();
     document.querySelectorAll('.ad-form__photo').forEach(function (photo) {
       photo.remove();
     });
     window.upload.clearPreviews(window.upload.avatarFileChooser);
     window.upload.clearPreviews(window.upload.fileChooser, '.ad-form__photo', window.upload.dummy);
-    setAddressCoords();
-    window.utils.toggleDialogFieldsAvailability();
     window.form.setMinPrice(window.form.locationTypeField.value.toUpperCase());
+    togglePageAvailability();
 
     if (data) {
       window.map.pinsData = data;
@@ -115,9 +119,11 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  onXhrPostSuccess();
+  // onXhrPostSuccess();
+  togglePageAvailability();
 
   window.mainPin = {
+    togglePageAvailability: togglePageAvailability,
     setDefaultCoordsOfMainPin: setDefaultCoordsOfMainPin,
     onXhrPostSuccess: onXhrPostSuccess
   };

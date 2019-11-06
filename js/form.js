@@ -83,8 +83,17 @@
 
   function onResetBtnClick() {
     window.map.pinsData = [];
+    adForm.reset();
+    window.mapForm.mapFilters.reset();
+    window.map.clearMap();
     window.mainPin.setDefaultCoordsOfMainPin();
-    window.mainPin.onXhrPostSuccess();
+    document.querySelectorAll('.ad-form__photo').forEach(function (photo) {
+      photo.remove();
+    });
+    window.upload.clearPreviews(window.upload.avatarFileChooser);
+    window.upload.clearPreviews(window.upload.fileChooser, '.ad-form__photo', window.upload.dummy);
+    setMinPrice(locationTypeField.value.toUpperCase());
+    window.mainPin.togglePageAvailability();
   }
 
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
