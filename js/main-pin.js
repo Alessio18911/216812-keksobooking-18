@@ -10,7 +10,7 @@
   var MAIN_PIN_X_MAX = MAP_MAX_WIDTH - MAIN_PIN_HALF_WIDTH;
   var MAIN_PIN_Y_MIN = 47;
   var MAIN_PIN_Y_MAX = MAP_MAX_HEIGHT - MAIN_PIN_HEIGHT;
-  var GET_DATA_URL = 'https://js.dump.academy/keksobooking/data';
+  var GET_DATA_URL = 'https://js.dump.cademy/keksobooking/data';
 
   var mainPin = document.querySelector('.map__pin--main');
   var mainPinInitialTop = window.getComputedStyle(mainPin).getPropertyValue('top');
@@ -53,50 +53,50 @@
     evt.preventDefault();
     if (!window.map.pinsData.length) {
       window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
-    }
-
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    function onMouseMove(moveEvt) {
-      moveEvt.preventDefault();
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+    } else {
+      var startCoords = {
+        x: evt.clientX,
+        y: evt.clientY
       };
 
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
+      function onMouseMove(moveEvt) {
+        moveEvt.preventDefault();
 
-      var mainPinHorizontalPosition = mainPin.offsetLeft - shift.x;
-      var mainPinVerticalPosition = mainPin.offsetTop - shift.y;
+        var shift = {
+          x: startCoords.x - moveEvt.clientX,
+          y: startCoords.y - moveEvt.clientY
+        };
 
-      if (mainPinHorizontalPosition <= MAIN_PIN_X_MAX && mainPinHorizontalPosition >= MAIN_PIN_X_MIN) {
-        mainPin.style.left = mainPinHorizontalPosition + 'px';
+        startCoords = {
+          x: moveEvt.clientX,
+          y: moveEvt.clientY
+        };
+
+        var mainPinHorizontalPosition = mainPin.offsetLeft - shift.x;
+        var mainPinVerticalPosition = mainPin.offsetTop - shift.y;
+
+        if (mainPinHorizontalPosition <= MAIN_PIN_X_MAX && mainPinHorizontalPosition >= MAIN_PIN_X_MIN) {
+          mainPin.style.left = mainPinHorizontalPosition + 'px';
+        }
+
+        if (mainPinVerticalPosition <= MAIN_PIN_Y_MAX && mainPinVerticalPosition > MAIN_PIN_Y_MIN) {
+          mainPin.style.top = mainPinVerticalPosition + 'px';
+        }
+
+        setAddressCoords(true);
       }
 
-      if (mainPinVerticalPosition <= MAIN_PIN_Y_MAX && mainPinVerticalPosition > MAIN_PIN_Y_MIN) {
-        mainPin.style.top = mainPinVerticalPosition + 'px';
+      function onMouseUp(upEvt) {
+        upEvt.preventDefault();
+        setAddressCoords(true);
+
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
       }
 
-      setAddressCoords(true);
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
     }
-
-    function onMouseUp(upEvt) {
-      upEvt.preventDefault();
-      setAddressCoords(true);
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    }
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
   });
 
   togglePageAvailability();
