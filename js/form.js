@@ -75,13 +75,7 @@
     }
   }
 
-  function onFormSubmit(evt) {
-    evt.preventDefault();
-    window.backend.httpRequest(POST_DATA_URL, 'POST', window.mainPin.onXhrPostSuccess, new FormData(window.form.adForm));
-    window.mainPin.setDefaultCoordsOfMainPin();
-  }
-
-  function onResetBtnClick() {
+  function disablePage() {
     window.map.pinsData = [];
     adForm.reset();
     window.mapForm.mapFilters.reset();
@@ -96,6 +90,20 @@
     window.mainPin.togglePageAvailability();
   }
 
+  function onXhrPostSuccess() {
+    disablePage();
+    window.utils.showSuccess();
+  }
+
+  function onFormSubmit(evt) {
+    evt.preventDefault();
+    window.backend.httpRequest(POST_DATA_URL, 'POST', onXhrPostSuccess, new FormData(window.form.adForm));
+  }
+
+  function onResetBtnClick() {
+    disablePage();
+  }
+
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
   guestsSelect.addEventListener('change', onRoomsGuestsChange);
   roomsSelect.addEventListener('change', onRoomsGuestsChange);
@@ -106,8 +114,6 @@
 
   window.form = {
     adForm: adForm,
-    addressField: addressField,
-    locationTypeField: locationTypeField,
-    setMinPrice: setMinPrice
+    addressField: addressField
   };
 })();
