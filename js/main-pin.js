@@ -41,15 +41,21 @@
     togglePageAvailability(data);
   }
 
-  function onMainPinClick() {
-    if (!window.map.pinsData.length) {
-      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
+  function onMainPinKeydown(evt) {
+    if (evt.keyCode === window.utils.ENTER_KEY_CODE) {
+      if (!window.map.pinsData.length) {
+        window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
+      }
     }
   }
 
-  mainPin.addEventListener('click', onMainPinClick);
+  mainPin.addEventListener('keydown', onMainPinKeydown);
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
+
+    if (!window.map.pinsData.length) {
+      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
+    }
 
     var startCoords = {
       x: evt.clientX,
