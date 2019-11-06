@@ -41,20 +41,15 @@
     togglePageAvailability(data);
   }
 
-  mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.utils.ENTER_KEY_CODE) {
-      if (!window.map.pinsData.length) {
-        window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
-      }
-    }
-  });
-
-  mainPin.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-
+  function onMainPinClick() {
     if (!window.map.pinsData.length) {
       window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
     }
+  }
+
+  mainPin.addEventListener('click', onMainPinClick);
+  mainPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
 
     var startCoords = {
       x: evt.clientX,
