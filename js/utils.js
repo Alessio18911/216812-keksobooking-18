@@ -4,41 +4,39 @@
   var DEBOUNCE_INTERVAL = 500;
   var ENTER_KEY_CODE = 13;
   var ESC_KEY_CODE = 27;
+  var ADVERT_IMAGE_WIDTH = 45;
+  var ADVERT_IMAGE_HEIGHT = 45;
 
   var mainPageContent = document.body.querySelector('main');
   var dialogFields = document.querySelectorAll('fieldset, input, select, textarea');
 
-  function createListOfLis(classes, listContainer, dataArray) {
+  function createListOfLis(classes, listContainer, data) {
     var fragment = document.createDocumentFragment();
-    var arrayLength = dataArray.length;
 
-    for (var i = 0; i < arrayLength; i++) {
+    data.forEach(function (item) {
       var element = document.createElement('li');
-      var elementClasses = classes + dataArray[i];
+      var elementClasses = classes + item;
       element.className = elementClasses;
-      element.textContent = dataArray[i];
-
+      element.textContent = item;
       fragment.appendChild(element);
-    }
+    });
 
     listContainer.appendChild(fragment);
     return listContainer;
   }
 
-  function createListOfAdImages(classes, listContainer, dataArray) {
+  function createListOfAdImages(classes, listContainer, data) {
     var fragment = document.createDocumentFragment();
-    var arrayLength = dataArray.length;
 
-    for (var i = 0; i < arrayLength; i++) {
-      var element = document.createElement('img');
-      element.src = dataArray[i];
-      element.classList.add(classes);
-      element.width = 45;
-      element.height = 45;
-      element.alt = 'Фотография жилья';
-
-      fragment.appendChild(element);
-    }
+    data.forEach(function (img) {
+      var image = document.createElement('img');
+      image.src = img;
+      image.classList.add(classes);
+      image.width = ADVERT_IMAGE_WIDTH;
+      image.height = ADVERT_IMAGE_HEIGHT;
+      image.alt = 'Фотография жилья';
+      fragment.appendChild(image);
+    });
 
     listContainer.appendChild(fragment);
     return listContainer;

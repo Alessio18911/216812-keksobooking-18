@@ -36,16 +36,16 @@
   }
 
   function onXhrLoadSuccess(data) {
-    window.map.pinsData = data;
-    window.map.renderPins(data);
-    togglePageAvailability(data);
+    if (!data.length) {
+      window.map.pinsData = data;
+      window.map.renderPins(data);
+      togglePageAvailability(data);
+    }
   }
 
   function onMainPinKeydown(evt) {
     if (evt.keyCode === window.utils.ENTER_KEY_CODE) {
-      if (!window.map.pinsData.length) {
-        window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
-      }
+      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
     }
   }
 
@@ -53,9 +53,7 @@
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    if (!window.map.pinsData.length) {
-      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
-    }
+    window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
 
     var startCoords = {
       x: evt.clientX,
