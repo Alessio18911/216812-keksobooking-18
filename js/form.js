@@ -91,8 +91,8 @@
   }
 
   function onXhrPostSuccess() {
-    disablePage();
     window.utils.showSuccess();
+    disablePage();
   }
 
   function onFormSubmit(evt) {
