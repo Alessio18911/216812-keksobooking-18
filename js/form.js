@@ -62,17 +62,12 @@
     setMinPrice(evt.target.value.toUpperCase());
   }
 
-  function onTimeSelectsChange(evt) {
-    var target = evt.target;
+  function onTimeInSelectChange(evt) {
+    timeOutSelect.value = evt.target.value;
+  }
 
-    switch (target.id) {
-      case 'timein':
-        timeOutSelect.value = target.value;
-        break;
-
-      default:
-        timeInSelect.value = target.value;
-    }
+  function onTimeOutSelectChange(evt) {
+    timeInSelect.value = evt.target.value;
   }
 
   function disablePage() {
@@ -107,8 +102,8 @@
   locationTypeField.addEventListener('change', onLocationTypeFieldChange);
   guestsSelect.addEventListener('change', onRoomsGuestsChange);
   roomsSelect.addEventListener('change', onRoomsGuestsChange);
-  timeInSelect.addEventListener('change', onTimeSelectsChange);
-  timeOutSelect.addEventListener('change', onTimeSelectsChange);
+  timeInSelect.addEventListener('change', onTimeInSelectChange);
+  timeOutSelect.addEventListener('change', onTimeOutSelectChange);
   adForm.addEventListener('submit', onFormSubmit);
   adFormReset.addEventListener('click', onResetBtnClick);
 
