@@ -11,6 +11,7 @@
   var timeOutSelect = adForm.querySelector('#timeout');
   var roomsSelect = adForm.querySelector('#room_number');
   var guestsSelect = adForm.querySelector('#capacity');
+  var dialogFields = document.querySelectorAll('input, select, textarea, button:not(.map__pin--main)');
   var adFormReset = adForm.querySelector('.ad-form__reset');
 
   var roomsToCapacity = {
@@ -41,6 +42,12 @@
     HOUSE: 5000,
     PALACE: 10000
   };
+
+  function toggleDialogFieldsAvailability(flag) {
+    dialogFields.forEach(function (item) {
+      item.disabled = !flag;
+    });
+  }
 
   function setMinPrice(locationType) {
     locationPriceField.setAttribute('min', MinPrice[locationType]);
@@ -76,6 +83,8 @@
     window.mapForm.mapFilters.reset();
     window.map.clearMap();
     window.mainPin.setDefaultCoordsOfMainPin();
+    window.mainPin.mainPin.addEventListener('mousedown', window.mainPin.onMainPinFirstMousedown);
+    window.mainPin.mainPin.addEventListener('keydown', window.mainPin.onMainPinFirstKeydown);
     document.querySelectorAll('.ad-form__photo').forEach(function (photo) {
       photo.remove();
     });
@@ -86,13 +95,14 @@
   }
 
   function onXhrPostSuccess() {
-    window.utils.showSuccess();
     disablePage();
+    window.utils.showSuccess();
   }
 
   function onFormSubmit(evt) {
     evt.preventDefault();
     window.backend.httpRequest(POST_DATA_URL, 'POST', onXhrPostSuccess, new FormData(window.form.adForm));
+    toggleDialogFieldsAvailability(false);
   }
 
   function onResetBtnClick() {
@@ -109,6 +119,8 @@
 
   window.form = {
     adForm: adForm,
-    addressField: addressField
+    adFormReset: adFormReset,
+    addressField: addressField,
+    toggleDialogFieldsAvailability: toggleDialogFieldsAvailability
   };
 })();

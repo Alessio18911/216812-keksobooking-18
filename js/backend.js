@@ -27,6 +27,7 @@
   function onWindowErrorClick(evt) {
     if (!evt.target.matches('.error__message')) {
       removeErrorPopup();
+      window.form.toggleDialogFieldsAvailability(true);
       document.removeEventListener('keydown', onWindowErrorKeydown);
     }
   }
@@ -34,6 +35,7 @@
   function onWindowErrorKeydown(evt) {
     if (evt.keyCode === window.utils.ESC_KEY_CODE) {
       removeErrorPopup();
+      window.form.toggleDialogFieldsAvailability(true);
       document.removeEventListener('keydown', onWindowErrorKeydown);
     }
   }

@@ -32,7 +32,7 @@
     window.map.map.classList.toggle('map--faded');
     window.form.adForm.classList.toggle('ad-form--disabled');
     setAddressCoords(data);
-    window.utils.toggleDialogFieldsAvailability(data);
+    window.form.toggleDialogFieldsAvailability(data);
   }
 
   function onXhrLoadSuccess(data) {
@@ -41,21 +41,24 @@
     togglePageAvailability(data);
   }
 
-  function onMainPinKeydown(evt) {
+  function onMainPinFirstKeydown(evt) {
     if (evt.keyCode === window.utils.ENTER_KEY_CODE) {
-      if (!window.map.pinsData.length) {
-        window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
-      }
+      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
+      mainPin.removeEventListener('mousedown', onMainPinFirstMousedown);
+      mainPin.removeEventListener('keydown', onMainPinFirstKeydown);
     }
   }
 
-  mainPin.addEventListener('keydown', onMainPinKeydown);
+  function onMainPinFirstMousedown() {
+    window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
+    mainPin.removeEventListener('mousedown', onMainPinFirstMousedown);
+    mainPin.removeEventListener('keydown', onMainPinFirstKeydown);
+  }
+
+  mainPin.addEventListener('keydown', onMainPinFirstKeydown);
+  mainPin.addEventListener('mousedown', onMainPinFirstMousedown);
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-
-    if (!window.map.pinsData.length) {
-      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
-    }
 
     var startCoords = {
       x: evt.clientX,
@@ -99,13 +102,15 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-
   });
 
   togglePageAvailability();
 
   window.mainPin = {
+    mainPin: mainPin,
     togglePageAvailability: togglePageAvailability,
-    setDefaultCoordsOfMainPin: setDefaultCoordsOfMainPin
+    setDefaultCoordsOfMainPin: setDefaultCoordsOfMainPin,
+    onMainPinFirstMousedown: onMainPinFirstMousedown,
+    onMainPinFirstKeydown: onMainPinFirstKeydown
   };
 })();

@@ -8,7 +8,6 @@
   var ADVERT_IMAGE_HEIGHT = 45;
 
   var mainPageContent = document.body.querySelector('main');
-  var dialogFields = document.querySelectorAll('fieldset, input, select, textarea');
 
   function createListOfLis(classes, listContainer, data) {
     var fragment = document.createDocumentFragment();
@@ -40,12 +39,6 @@
 
     listContainer.appendChild(fragment);
     return listContainer;
-  }
-
-  function toggleDialogFieldsAvailability(flag) {
-    dialogFields.forEach(function (item) {
-      item.disabled = !flag;
-    });
   }
 
   function debounce(cb) {
@@ -109,7 +102,6 @@
     createListOfLis: createListOfLis,
     createListOfAdImages: createListOfAdImages,
     removeElementClass: removeElementClass,
-    showSuccess: showSuccess,
-    toggleDialogFieldsAvailability: toggleDialogFieldsAvailability
+    showSuccess: showSuccess
   };
 })();
