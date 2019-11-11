@@ -43,9 +43,7 @@
 
   function onMainPinFirstKeydown(evt) {
     if (evt.keyCode === window.utils.ENTER_KEY_CODE) {
-      window.backend.httpRequest(GET_DATA_URL, 'GET', onXhrLoadSuccess);
-      mainPin.removeEventListener('mousedown', onMainPinFirstMousedown);
-      mainPin.removeEventListener('keydown', onMainPinFirstKeydown);
+      onMainPinFirstMousedown();
     }
   }
 
